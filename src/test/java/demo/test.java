@@ -31,8 +31,8 @@ public class test {
 
     @Test
     public void name() {
-        AdmissionPlan admissionPlan = new AdmissionPlan("Java招生计划","我是一个简介",1,new BigDecimal("123.34"),25,2022 );
-        service.save(admissionPlan);
+//        AdmissionPlan admissionPlan = new AdmissionPlan("Java招生计划","我是一个简介",1,new BigDecimal("123.34"),25,2022 );
+//        service.save(admissionPlan);
         System.out.println(mapper.aa());
     }
 }

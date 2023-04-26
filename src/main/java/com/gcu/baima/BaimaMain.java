@@ -15,6 +15,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class BaimaMain {
     public static void main(String[] args) {
         System.out.println("ahahha");
+        System.out.println("ahahha");
+        System.out.println("ahahha");
         SpringApplication.run(BaimaMain.class,args);
     }
 }
