@@ -1,4 +1,4 @@
-package com.gcu.baima.entity;
+package com.gcu.baima.entity.Vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

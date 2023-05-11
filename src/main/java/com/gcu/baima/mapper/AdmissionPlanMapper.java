@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface AdmissionPlanMapper extends BaseMapper<AdmissionPlan> {
     public List<AdmissionPlan> aa();
+    Integer bb();
 }
