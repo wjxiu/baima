@@ -46,6 +46,10 @@ public class AdmissionPlan implements Serializable {
     @ApiModelProperty(value = "课程id")
     private Integer courseId;
 
+    @TableField(exist = false)
+    @ApiModelProperty(value = "课程id")
+    private Course course;
+
     @ApiModelProperty(value = "收费")
     private BigDecimal charge;
 
@@ -53,7 +57,7 @@ public class AdmissionPlan implements Serializable {
     private Integer duration;
 
     @ApiModelProperty(value = "所属年份，YYYY")
-    private Integer year;
+    private Integer year=new Date().getYear();
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
@@ -68,7 +72,6 @@ public class AdmissionPlan implements Serializable {
         this.duration = duration;
         this.year = year;
     }
-
     public AdmissionPlan() {
     }
 }
