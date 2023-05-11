@@ -3,6 +3,7 @@ package com.gcu.baima.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gcu.baima.entity.AdmissionPlan;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gcu.baima.entity.VO.AdmissionVo;
 
 /**
  * <p>
@@ -21,8 +22,11 @@ public interface AdmissionPlanService extends IService<AdmissionPlan> {
      * @return
      */
     IPage<AdmissionPlan> pageAdminssion(Long page, Long limit, AdmissionPlan queryVo);
+    AdmissionVo getAdminssionByCourseType(Integer courseType);
 
-    void saveAdmissionPlan(AdmissionPlan admissionPlan);
+    void saveAdmission(AdmissionVo vo);
 
-    AdmissionPlan getAdminssionById(String id);
+    AdmissionVo getAdminssionById(String id);
+
+    void updateByAdmissionId(AdmissionVo admissionPlanVo);
 }

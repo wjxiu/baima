@@ -2,6 +2,7 @@ package com.gcu.baima.mapper;
 
 import com.gcu.baima.entity.AdmissionPlan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.gcu.baima.entity.VO.AdmissionVo;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @since 2023-04-26
  */
 public interface AdmissionPlanMapper extends BaseMapper<AdmissionPlan> {
-    public List<AdmissionPlan> aa();
-    Integer bb();
+    public AdmissionVo getByid(String id);
+
+    public AdmissionVo getByCourseType(Integer courseType);
 }

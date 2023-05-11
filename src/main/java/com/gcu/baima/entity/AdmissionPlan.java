@@ -40,15 +40,11 @@ public class AdmissionPlan implements Serializable {
     @ApiModelProperty(value = "招生计划名字")
     private String name;
 
-    @ApiModelProperty(value = "介绍")
+    @ApiModelProperty(value = "简介")
     private String info;
 
-    @ApiModelProperty(value = "课程id")
-    private Integer courseId;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "课程,只用显示，新增招生计划添加课程id即可")
-    private Course course;
+    @ApiModelProperty(value = "课程类别")
+    private Integer courseType;
 
     @ApiModelProperty(value = "收费")
     private BigDecimal charge;
@@ -64,10 +60,10 @@ public class AdmissionPlan implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
-    public AdmissionPlan(String name, String info, Integer courseId, BigDecimal charge, Integer duration, Integer year) {
+    public AdmissionPlan(String name, String info, Integer courseType, BigDecimal charge, Integer duration, Integer year) {
         this.name = name;
         this.info = info;
-        this.courseId = courseId;
+        this.courseType = courseType;
         this.charge = charge;
         this.duration = duration;
         this.year = year;

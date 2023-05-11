@@ -1,9 +1,12 @@
 package com.gcu.baima.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gcu.baima.entity.AdmissionPlan;
+import com.gcu.baima.entity.VO.AdmissionVo;
 import com.gcu.baima.service.AdmissionPlanService;
+import com.gcu.baima.service.ArticleService;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,28 +28,31 @@ import org.springframework.web.bind.annotation.*;
 public class AdmissionPlanController {
     @Autowired
     AdmissionPlanService admissionPlanService;
+    @Autowired
+    ArticleService articleService;
     @ApiOperation("根据id查询招生计划")
     @GetMapping("{id}")
     public R getById(@ApiParam("招生计划id") @PathVariable String id){
-        AdmissionPlan byId = admissionPlanService.getAdminssionById(id);
+        AdmissionVo byId = admissionPlanService.getAdminssionById(id);
         return R.ok().data("admission",byId);
     }
     @ApiOperation("根据id删除招生计划")
     @DeleteMapping("{id}")
     public R deleteById(@ApiParam("招生计划id") @PathVariable String id){
         admissionPlanService.removeById(id);
+        articleService.removeById(id);
         return R.ok();
     }
     @ApiOperation("创建招生计划")
     @PostMapping("")
-    public R addAdmission(@ApiParam("招生计划实体类") @RequestBody AdmissionPlan admissionPlan){
-        admissionPlanService.saveAdmissionPlan(admissionPlan);
-        return R.ok().data("admission",admissionPlan);
+    public R addAdmission(@ApiParam("招生计划实体类") @RequestBody AdmissionVo vo){
+        admissionPlanService.saveAdmission(vo);
+        return R.ok();
     }
     @ApiOperation(value = "根据id修改招生计划",notes = "招生计划实体类必须有id")
     @PutMapping("")
-    public R updateAdmission(@ApiParam(value = "招生计划实体类")@RequestBody AdmissionPlan admissionPlan){
-        admissionPlanService.update(admissionPlan,null);
+    public R updateAdmission(@ApiParam(value = "招生计划实体类")@RequestBody AdmissionVo admissionPlanVo){
+        admissionPlanService.updateByAdmissionId(admissionPlanVo);
         return R.ok();
     }
 

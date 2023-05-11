@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.AdmissionPlanMapper">
-    <select id="aa" resultType="com.gcu.baima.entity.AdmissionPlan">
-        select *
-        from admission_plan;
+    <select id="getByid" resultType="com.gcu.baima.entity.VO.AdmissionVo">
+        select ap.id ,ap.name,ap.info,ap.course_type as courseType,ap.charge,ap.duration,ap.year,
+               article.id as authorId,manager.username as authorName
+        from admission_plan ap
+        left join article on ap.id=article.id
+        left join manager on manager.id=article.author_id
+        where ap.id=#{id}
     </select>
-    <select id="bb" resultType="com.gcu.baima.entity.AdmissionPlan">
-        select 25
-        from admission_plan;
+    <select id="getByCourseType"  resultType="com.gcu.baima.entity.VO.AdmissionVo">
+        select ap.id ,ap.name,ap.info,ap.course_type as courseType,ap.charge,ap.duration,ap.year,
+               article.id as authorId,manager.username as authorName
+        from admission_plan ap
+                 left join article on ap.id=article.id
+                 left join manager on manager.id=article.author_id
+        where ap.course_type=#{course_type}
     </select>
-
-
 </mapper>

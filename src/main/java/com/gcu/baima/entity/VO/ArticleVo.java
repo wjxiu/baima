@@ -1,4 +1,4 @@
-package com.gcu.baima.entity.Vo;
+package com.gcu.baima.entity.VO;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,6 +12,8 @@ import java.util.Date;
  */
 @Data
 public class ArticleVo {
+
+    private String id;
 
     @ApiModelProperty(value = "文章标题")
     private String title;
