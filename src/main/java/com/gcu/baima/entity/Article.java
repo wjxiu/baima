@@ -1,7 +1,10 @@
 package com.gcu.baima.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -46,8 +49,9 @@ public class Article implements Serializable {
     @ApiModelProperty(value = "内容，存储富文本")
     private String content;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
-
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
 

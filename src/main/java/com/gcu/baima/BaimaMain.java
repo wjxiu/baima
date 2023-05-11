@@ -14,9 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication(scanBasePackages = {"com.gcu"})
 public class BaimaMain {
     public static void main(String[] args) {
-        System.out.println("ahahha");
-        System.out.println("ahahha");
-        System.out.println("ahahha");
         SpringApplication.run(BaimaMain.class,args);
     }
 }
