@@ -1,9 +1,15 @@
 package com.gcu.baima.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -60,9 +66,11 @@ public class Customer implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
-    private Date gmtModified;
-
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date gmtModified;
 
 
 }

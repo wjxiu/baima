@@ -2,4 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.ArticleMapper">
 
+    <select id="getArticleById" resultType="com.gcu.baima.entity.VO.ArticleVo">
+        select article.id,
+               article.public_time,
+               manager.username as authorname,
+               article.view,
+               article.title,
+               article.content,
+               ac.name          as categoryName,
+               article.ac_id    as categoryId
+        from article
+                 left join article_category as ac
+                           on article.ac_id = ac.id
+                 left join manager
+                           on article.author_id = manager.id
+        where article.id = #{id}
+    </select>
 </mapper>

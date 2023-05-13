@@ -1,9 +1,16 @@
 package com.gcu.baima.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.math.BigDecimal;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,6 +42,9 @@ public class Course implements Serializable {
     @ApiModelProperty(value = "名字")
     private String name;
 
+    @ApiModelProperty(value = "收费")
+    private BigDecimal charge;
+
     @ApiModelProperty(value = "最大班级人数")
     private Integer maxClassNum;
 
@@ -49,9 +59,10 @@ public class Course implements Serializable {
 
     @ApiModelProperty(value = "开班时间")
     private Date startTime;
-
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
 

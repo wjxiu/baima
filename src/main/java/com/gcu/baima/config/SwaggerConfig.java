@@ -31,8 +31,8 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("白马招生API文档")
                 .description("本文档描述了白马招生接口定义")
-                        .version("1.0")
-                        .contact(new Contact("WJX", "http://baima.com", "12435@qq.com"))
+                .version("1.0")
+                .contact(new Contact("WJX", "http://baima.com", "2277346638@qq.com"))
                         .build();
     }
 

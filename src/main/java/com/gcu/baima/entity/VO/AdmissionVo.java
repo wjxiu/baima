@@ -16,13 +16,15 @@ import java.util.Date;
  * @create 2023-05-11 11:41
  */
 @Data
-public class AdmissionVo extends AdmissionPlan {
-    @ApiModelProperty(value = "作者id")
+public class AdmissionVo {
+    private String id;
+    private String name;
+    private String info;
+    private String title;
+    private Integer courseType;
+    private BigDecimal charge;
+    private Integer duration;
+    private Integer year;
     private String authorId;
-
-    @ApiModelProperty(value = "作者名称")
-    private String authorName;
-
-    @ApiModelProperty(value = "内容")
-    private String context;
+    private String content;
 }

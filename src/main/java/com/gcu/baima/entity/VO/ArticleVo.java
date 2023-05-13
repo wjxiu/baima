@@ -12,9 +12,8 @@ import java.util.Date;
  */
 @Data
 public class ArticleVo {
-
     private String id;
-
+    private String categoryId;
     @ApiModelProperty(value = "文章标题")
     private String title;
 
@@ -30,6 +29,9 @@ public class ArticleVo {
 
     @ApiModelProperty(value = "内容，存储富文本")
     private String content;
+
+    @ApiModelProperty(value = "分类名")
+    private String categoryName;
 
 
 }

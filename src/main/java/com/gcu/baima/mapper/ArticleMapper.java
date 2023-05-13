@@ -2,6 +2,7 @@ package com.gcu.baima.mapper;
 
 import com.gcu.baima.entity.Article;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.gcu.baima.entity.VO.ArticleVo;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ArticleMapper extends BaseMapper<Article> {
 
+    ArticleVo getArticleById(String id);
 }

@@ -29,9 +29,9 @@ public class Article implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
+    @TableId(value = "id", type = IdType.INPUT)
     private String id;
-
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "发布日期")
     private Date publicTime;
 
@@ -54,5 +54,7 @@ public class Article implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

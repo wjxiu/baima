@@ -1,7 +1,12 @@
 package com.gcu.baima.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.Registration;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.gcu.baima.entity.VO.RegistrationVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface RegistrationMapper extends BaseMapper<Registration> {
 
+    List<RegistrationVo> pageRegistVo(@Param("id") String id, Page<RegistrationVo> page);
 }
