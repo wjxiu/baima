@@ -55,7 +55,6 @@ public class TrialLessonController {
     @ApiOperation(value = "根据id删除试课课程 ", notes = "会强制删除与之有关的用户评论和用户申请")
     @DeleteMapping("{id}")
     public R deleteTrialLessonById(@PathVariable String id) {
-        System.out.println(id);
         trialLessonService.deleteTrialLessonById(id);
         return R.ok();
     }
@@ -85,8 +84,8 @@ public class TrialLessonController {
         return R.ok();
     }
 
-    @ApiOperation("分页查询")
-// 分页
+    // 分页，参数未确定
+    @ApiOperation("分页查询课程")
     @PostMapping("page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit, @RequestBody HashMap<String, String> map) {
         Page<TrialLessonVo> trialLessonPage = new Page<>(pageNo, limit);
@@ -94,10 +93,13 @@ public class TrialLessonController {
         return R.ok().data("page", trialLessonPage);
     }
 
+    @ApiOperation("修改试课课程")
     @PutMapping()
     public R update(@RequestBody TrialLesson trialLesson) {
         trialLessonService.updateById(trialLesson);
         return R.ok();
     }
+
+
 }
 

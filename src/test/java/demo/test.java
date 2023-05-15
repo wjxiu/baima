@@ -1,5 +1,6 @@
 package demo;
 
+import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.crypto.digest.BCrypt;
 import com.gcu.baima.BaimaMain;
 import com.gcu.baima.mapper.AdmissionPlanMapper;
@@ -25,7 +26,7 @@ public class test {
 
     @Test
     public void name() {
-        String hashpw = BCrypt.hashpw("111");
-        System.out.println(BCrypt.checkpw("111", hashpw));
+        System.out.println(Ipv4Util.longToIpv4(3232257875L));
+
     }
 }

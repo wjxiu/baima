@@ -26,4 +26,6 @@ public interface TrialLessonService extends IService<TrialLesson> {
     void deleteTrialLessonById(String id);
 
     void pageTrialLesson(Page<TrialLessonVo> trialLessonPage, HashMap<String, String> map);
+
+
 }

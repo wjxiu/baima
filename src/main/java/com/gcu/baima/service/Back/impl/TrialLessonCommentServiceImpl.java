@@ -1,5 +1,6 @@
 package com.gcu.baima.service.Back.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.TrialLessonComment;
@@ -27,5 +28,14 @@ public class TrialLessonCommentServiceImpl extends ServiceImpl<TrialLessonCommen
         Page<TrialLessonCommentVo> voPage = new Page<>(pageNo, limit);
         baseMapper.queryPage(voPage, map);
         return voPage;
+    }
+
+    @Override
+    public Boolean isRate(String trialLessonId, String customerId) {
+        QueryWrapper<TrialLessonComment> wrapper = new QueryWrapper<>();
+        wrapper.eq("trial_id", trialLessonId)
+                .eq("customer_id", customerId);
+        int count = count(wrapper);
+        return count > 0;
     }
 }

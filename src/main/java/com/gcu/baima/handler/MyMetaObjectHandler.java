@@ -17,6 +17,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         Date date = new Date();
         this.setFieldValByName("gmtCreate", date, metaObject);
+        this.setFieldValByName("sendTime", date, metaObject);
         this.setFieldValByName("gmtModified", date, metaObject);
     }
 

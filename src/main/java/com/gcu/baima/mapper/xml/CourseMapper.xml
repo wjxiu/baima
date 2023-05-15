@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.CourseMapper">
 
+    <select id="listFront" resultType="com.gcu.baima.entity.Course">
+        select id,
+               name,
+               type
+        from course
+    </select>
 </mapper>

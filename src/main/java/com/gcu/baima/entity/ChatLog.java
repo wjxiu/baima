@@ -1,9 +1,15 @@
 package com.gcu.baima.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,14 +39,39 @@ public class ChatLog implements Serializable {
     private String context;
 
     @ApiModelProperty(value = "ip使用Int存储，保存时要转换")
-    private Integer fromIp;
+    private Long fromIp;
 
     @ApiModelProperty(value = "注册用户id")
-    private Integer customerId;
+    private String customerId;
 
     @ApiModelProperty(value = "招生专员id")
     private String mangerId;
-
     @ApiModelProperty(value = "消息发送时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date sendTime;
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public void setFromIp(Long fromIp) {
+        this.fromIp = fromIp;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setMangerId(String mangerId) {
+        this.mangerId = mangerId;
+    }
+
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
+    }
 }

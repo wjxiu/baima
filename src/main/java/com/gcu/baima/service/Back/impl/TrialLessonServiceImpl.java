@@ -77,4 +77,6 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
     public void pageTrialLesson(Page<TrialLessonVo> trialLessonPage, HashMap<String, String> map) {
         baseMapper.pageTrialLesson(trialLessonPage, map);
     }
+
+
 }

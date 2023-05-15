@@ -8,6 +8,7 @@ import com.gcu.baima.entity.VO.TrialLessonCommentVo;
 import com.gcu.baima.service.Back.TrialLessonCommentService;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,15 @@ public class TrialLessonCommentController {
                   @ApiParam() @RequestBody(required = false) HashMap<String, String> map) {
         IPage<TrialLessonCommentVo> page = commentService.pageComment(pageNo, limit, map);
         return R.ok().data("page", page);
+    }
+
+    //    判断是否已评价该门课程, 试听课程ID、用户ID
+    @ApiOperation("判断是否已评价该门课程")
+    @GetMapping("isRate")
+    public R isRate(String trialLesson, String customerId) {
+        Boolean rate = commentService.isRate(trialLesson, customerId);
+        if (rate) return R.ok().message("已评价").data("isRate", 1);
+        return R.ok().message("未评价").data("isRate", 0);
     }
 }
 
