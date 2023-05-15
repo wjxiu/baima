@@ -1,6 +1,7 @@
 package com.gcu.baima.service.Back.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonCustomer;
 import com.gcu.baima.entity.VO.TrialLessonVo;
@@ -11,6 +12,8 @@ import com.gcu.baima.service.Back.TrialLessonService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 /**
  * <p>
@@ -68,5 +71,10 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
     @Override
     public void deleteTrialLessonById(String id) {
         baseMapper.deleteTrialLessonById(id);
+    }
+
+    @Override
+    public void pageTrialLesson(Page<TrialLessonVo> trialLessonPage, HashMap<String, String> map) {
+        baseMapper.pageTrialLesson(trialLessonPage, map);
     }
 }

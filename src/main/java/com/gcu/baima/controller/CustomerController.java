@@ -59,5 +59,6 @@ public class CustomerController {
         IPage<Customer> page = customerService.page(customerPage, null);
         return R.ok().data("pageRegistVo", page);
     }
+
 }
 

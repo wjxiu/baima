@@ -1,8 +1,11 @@
 package com.gcu.baima.service.Back;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.TrialLesson;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gcu.baima.entity.VO.TrialLessonVo;
+
+import java.util.HashMap;
 
 /**
  * <p>
@@ -21,4 +24,6 @@ public interface TrialLessonService extends IService<TrialLesson> {
     TrialLessonVo getTrialById(String id);
 
     void deleteTrialLessonById(String id);
+
+    void pageTrialLesson(Page<TrialLessonVo> trialLessonPage, HashMap<String, String> map);
 }

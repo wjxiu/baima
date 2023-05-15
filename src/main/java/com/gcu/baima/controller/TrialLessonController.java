@@ -2,6 +2,7 @@ package com.gcu.baima.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonCustomer;
 import com.gcu.baima.entity.VO.TrialLessonVo;
@@ -14,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * <p>
@@ -44,7 +47,6 @@ public class TrialLessonController {
     @GetMapping("{id}")
     public R getById(@PathVariable String id) {
         TrialLessonVo t = trialLessonService.getTrialById(id);
-//        TrialLesson trialLesson = trialLessonService.getById(id);
         return R.ok().data("trialLesson", t);
     }
 
@@ -82,7 +84,20 @@ public class TrialLessonController {
         trialLessonService.withdraw(customerId, trialLessionId);
         return R.ok();
     }
-//
 
+    @ApiOperation("分页查询")
+// 分页
+    @PostMapping("page/{pageNo}/{limit}")
+    public R page(@PathVariable Long pageNo, @PathVariable Long limit, @RequestBody HashMap<String, String> map) {
+        Page<TrialLessonVo> trialLessonPage = new Page<>(pageNo, limit);
+        trialLessonService.pageTrialLesson(trialLessonPage, map);
+        return R.ok().data("page", trialLessonPage);
+    }
+
+    @PutMapping()
+    public R update(@RequestBody TrialLesson trialLesson) {
+        trialLessonService.updateById(trialLesson);
+        return R.ok();
+    }
 }
 
