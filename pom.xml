@@ -27,6 +27,7 @@
         <easyexcel.version>2.1.1</easyexcel.version>
         <poi.version>3.17</poi.version>
         <jwt.version>0.7.0</jwt.version>
+        <lombok.version>1.18.22</lombok.version>
         <jodatime.version>2.10.1</jodatime.version>
         <junit.version>4.12</junit.version>
         <aliyun-sdk-oss.version>3.1.0</aliyun-sdk-oss.version>
@@ -89,6 +90,11 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
         <!--xls-->
         <dependency>
