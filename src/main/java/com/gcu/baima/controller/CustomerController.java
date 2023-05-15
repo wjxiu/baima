@@ -52,6 +52,7 @@ public class CustomerController {
     }
 
     //    todo 分页参数查询条件未知,map换为查询参数类
+    @ApiOperation("分页参数查询")
     @PostMapping("/page/{pageNo}/{limit}")
     public R pageCustomer(@PathVariable Long pageNo, @PathVariable Long limit, @RequestBody HashMap<String, Object> map) {
         Page<Customer> customerPage = new Page<>(pageNo, limit);

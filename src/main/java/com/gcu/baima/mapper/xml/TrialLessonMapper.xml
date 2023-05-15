@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.TrialLessonMapper">
+    <delete id="deleteTrialLessonById" parameterType="string">
+        DELETE
+        FROM `trial_lesson`
+        WHERE trial_lesson.id = #{id};
+        DELETE
+        FROM `trial_lesson_comment`
+        WHERE `trial_lesson_comment`.`trial_id` = #{id};
+        DELETE
+        FROM `trial_lesson_customer`
+        WHERE `trial_lesson_customer`.`trail_lession_id` = #{id};
+    </delete>
 
+    <select id="getTrialById" resultType="com.gcu.baima.entity.VO.TrialLessonVo">
+        select tl.id,
+               tl.date,
+               tl.location,
+               tl.start_time,
+               tl.end_time,
+               tl.curr_customer_num as currNum,
+               tl.gmt_modified      as gmtModified,
+               tl.gmt_create        as gmtCreate,
+               course.name          as courseName,
+               course.id            as courseId
+        from trial_lesson tl
+                 left join course on tl.course_id = course.id
+        where tl.id = #{id}
+    </select>
 </mapper>

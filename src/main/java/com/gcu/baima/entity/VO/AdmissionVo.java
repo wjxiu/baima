@@ -1,5 +1,6 @@
 package com.gcu.baima.entity.VO;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -27,4 +28,8 @@ public class AdmissionVo {
     private Integer year;
     private String authorId;
     private String content;
+    @TableField(fill = FieldFill.INSERT)
+    private Date gmtCreate;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date gmtModified;
 }

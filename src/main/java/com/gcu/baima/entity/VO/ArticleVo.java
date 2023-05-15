@@ -1,5 +1,7 @@
 package com.gcu.baima.entity.VO;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -32,6 +34,11 @@ public class ArticleVo {
 
     @ApiModelProperty(value = "分类名")
     private String categoryName;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Date gmtCreate;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date gmtModified;
 
 
 }

@@ -58,7 +58,7 @@ public class RegistrationController {
         return R.ok();
     }
 
-    @ApiOperation(value = "决绝用户的报名", notes = "没有删除报名信息")
+    @ApiOperation(value = "拒绝用户的报名", notes = "没有删除报名信息")
     @DeleteMapping("deny")
     public R deny(String userId, String courseId, @CurrentUserId String managerId) {
         registrationService.deny(userId, courseId, managerId);

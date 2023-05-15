@@ -1,5 +1,7 @@
 package com.gcu.baima.entity.VO;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.gcu.baima.Enum.CourseType;
 import lombok.Data;
 
@@ -21,5 +23,10 @@ public class CourseVo {
     private Integer maxNum;
     private CourseType CourseType;
     private Date startTime;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Date gmtCreate;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date gmtModified;
 
 }

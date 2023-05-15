@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.TrialLessonCommentMapper">
 
+    <select id="queryPage" resultType="com.gcu.baima.entity.VO.TrialLessonCommentVo">
+        SELECT tlc.id,
+               tlc.score,
+               tlc.context,
+               tlc.gmt_create,
+               course.`name`   AS courseName,
+               customer.`name` AS customerName,
+               course.`id`     as courseId
+        FROM `trial_lesson_comment` tlc
+                 LEFT JOIN `course` ON tlc.trial_id = course.`id`
+                 LEFT JOIN `customer` ON customer.`id` = tlc.customer_id
+
+    </select>
 </mapper>

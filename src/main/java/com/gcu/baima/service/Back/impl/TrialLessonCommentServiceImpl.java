@@ -1,14 +1,19 @@
 package com.gcu.baima.service.Back.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.TrialLessonComment;
+import com.gcu.baima.entity.VO.TrialLessonCommentVo;
 import com.gcu.baima.mapper.TrialLessonCommentMapper;
 import com.gcu.baima.service.Back.TrialLessonCommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author WJX
@@ -17,4 +22,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TrialLessonCommentServiceImpl extends ServiceImpl<TrialLessonCommentMapper, TrialLessonComment> implements TrialLessonCommentService {
 
+    @Override
+    public IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, HashMap<String, String> map) {
+        Page<TrialLessonCommentVo> voPage = new Page<>(pageNo, limit);
+        baseMapper.queryPage(voPage, map);
+        return voPage;
+    }
 }

@@ -65,17 +65,18 @@ public class CourseController {
         }
         return R.ok().data("course", course);
     }
+//todo 分页参数查询未知
+@ApiOperation("分页带参数获取课程列表")
+@PostMapping("page/{pageNo}/{limit}")
+public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("页大小") @PathVariable Long limit, @ApiParam("查询参数类") @RequestBody HashMap<String, Object> map) {
+    Page<Course> coursePage = new Page(pageNo, limit);
+    QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
+    courseService.page(coursePage, courseQueryWrapper);
+    return R.ok().data("pageRegistVo", coursePage);
+}
 
-    @ApiOperation("分页带参数获取课程列表")
-    @PostMapping("page/{pageNo}/{limit}")
-    public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("页大小") @PathVariable Long limit, @ApiParam("查询参数类") @RequestBody HashMap<String, Object> map) {
-        Page<Course> coursePage = new Page(pageNo, limit);
-        QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
-        courseService.page(coursePage, courseQueryWrapper);
-        return R.ok().data("pageRegistVo", coursePage);
-    }
-
-    //    查询所有课程的名字和id，为了报名选择课程
+    //    查询所有课程，为了报名选择课程
+    @ApiOperation("查询所有课程，为了用户报名选择课程")
     @PostMapping("all")
     public R getAll() {
         List<Course> list = courseService.list(null);
@@ -96,6 +97,7 @@ public class CourseController {
     }
 
     //    判断该课程是否已满人,满人返回1，未满返回0
+    @ApiOperation(value = "判断该课程是否已满人", notes = "判断结果为isFull，1满人，0为满人")
     @PostMapping("isFull/{courseId}")
     public R isFull(@PathVariable String courseId) {
         Boolean isFull = courseService.isFull(courseId);
