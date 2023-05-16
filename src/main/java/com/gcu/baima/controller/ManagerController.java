@@ -1,8 +1,10 @@
 package com.gcu.baima.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.Manager;
+import com.gcu.baima.entity.VO.ManagerVo;
 import com.gcu.baima.service.Back.ManagerService;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
@@ -32,7 +34,8 @@ public class ManagerController {
     @GetMapping("{id}")
     public R getById(@ApiParam("工作人员id") @PathVariable String id) {
         Manager manager = managerService.getById(id);
-        return R.ok().data("manager", manager);
+        ManagerVo managerVo = BeanUtil.copyProperties(manager, ManagerVo.class);
+        return R.ok().data("manager", managerVo);
     }
 
     @ApiOperation("更新信息")
@@ -54,8 +57,9 @@ public class ManagerController {
     @PostMapping("/page/{pageNo}/{limit}")
     public R pageManager(@ApiParam(value = "页码", required = true) @PathVariable Long pageNo,
                          @ApiParam(value = "页大小", required = true) @PathVariable Long limit,
-                         @ApiParam(value = "查询参数", required = false) HashMap<String, Object> map) {
-        Page<Manager> managerPage = managerService.pageManager(pageNo, limit, map);
+                         @ApiParam(value = "查询参数", required = true) @RequestBody(required = false) HashMap<String, Object> map) {
+
+        Page<ManagerVo> managerPage = managerService.pageManager(pageNo, limit, map);
         return R.ok().data("pageRegistVo", managerPage);
     }
 }

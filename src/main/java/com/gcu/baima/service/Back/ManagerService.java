@@ -3,6 +3,7 @@ package com.gcu.baima.service.Back;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.Manager;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gcu.baima.entity.VO.ManagerVo;
 
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ import java.util.HashMap;
  */
 public interface ManagerService extends IService<Manager> {
     //    分页查询工作人员
-    Page<Manager> pageManager(Long pageNo, Long limit, HashMap<String, Object> map);
+    Page<ManagerVo> pageManager(Long pageNo, Long limit, HashMap<String, Object> map);
 
     public Manager getByUserName(String username);
 }

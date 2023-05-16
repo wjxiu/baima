@@ -22,7 +22,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value = "Customer对象", description = "")
+@ApiModel(value = "Customervo对象", description = "")
 public class CustomerVo {
     private static final long serialVersionUID = 1L;
 
