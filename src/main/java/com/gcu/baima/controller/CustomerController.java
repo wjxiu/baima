@@ -1,9 +1,11 @@
 package com.gcu.baima.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.Customer;
+import com.gcu.baima.entity.VO.CustomerVo;
 import com.gcu.baima.service.Back.CustomerService;
 
 import com.gcu.baima.utils.R;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -34,7 +37,8 @@ public class CustomerController {
     @GetMapping("{id}")
     public R getById(@PathVariable String id) {
         Customer customer = customerService.getById(id);
-        return R.ok().data("customer", customer);
+        CustomerVo customervo = BeanUtil.copyProperties(customer, CustomerVo.class);
+        return R.ok().data("customer", customervo);
     }
 
     @ApiOperation("更新信息")
@@ -55,10 +59,8 @@ public class CustomerController {
     @ApiOperation("分页参数查询")
     @PostMapping("/page/{pageNo}/{limit}")
     public R pageCustomer(@PathVariable Long pageNo, @PathVariable Long limit, @RequestBody HashMap<String, Object> map) {
-        Page<Customer> customerPage = new Page<>(pageNo, limit);
-        IPage<Customer> page = customerService.page(customerPage, null);
-        return R.ok().data("pageRegistVo", page);
+        Page<CustomerVo> customerPageVo = customerService.pageCustomer(pageNo, limit, map);
+        return R.ok().data("pageRegistVo", customerPageVo);
     }
-
 }
 

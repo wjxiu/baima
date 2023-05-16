@@ -19,7 +19,7 @@ import java.util.List;
  * @author xiu
  * @create 2023-05-15 18:38
  */
-@RequestMapping("/front/coures")
+@RequestMapping("/baima/front/coures")
 @RestController
 public class FrontCourseController {
     @Autowired

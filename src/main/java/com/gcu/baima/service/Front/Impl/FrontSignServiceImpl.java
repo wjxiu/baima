@@ -6,6 +6,7 @@ import com.gcu.baima.entity.Customer;
 import com.gcu.baima.entity.VO.LoginVo;
 import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.service.Back.CustomerService;
+import com.gcu.baima.service.Back.ManagerService;
 import com.gcu.baima.service.Front.FrontSignService;
 import com.gcu.baima.utils.JwtHelper;
 import org.springframework.beans.BeanUtils;

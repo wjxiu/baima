@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  * @create 2023-05-11 21:33
  */
 @Api(tags = "前台登录注册controller")
-@RequestMapping("/frontsign")
+@RequestMapping("/baima/front/sign")
 @RestController()
 public class FrontSignController {
     @Resource

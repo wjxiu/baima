@@ -26,8 +26,11 @@ public class test {
 
     @Test
     public void name() {
-        BCrypt.hashpw()
-        System.out.println(Ipv4Util.longToIpv4(3232257875L));
+//        System.out.println(BCrypt.hashpw("123123"));
+        for (int i = 0; i < 100; i++) {
 
+            System.out.println(BCrypt.checkpw("123123", "$2a$10$MQX9xR7QHjFv5iqQmozYUugVQ5RQffrtliwVzH0QN8RrBo4EYLDCS"));
+        }
+//        System.out.println(BCrypt.checkpw("321122", "$2a$10$LmUYMqFJg1aQLiaQidCa3euwAHeLy.tuwrE1sRKI.46xLwylxX5iK"));
     }
 }

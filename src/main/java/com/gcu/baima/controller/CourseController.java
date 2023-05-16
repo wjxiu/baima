@@ -104,5 +104,15 @@ public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("�
         if (isFull) return R.ok().data("isFull", 1);
         return R.ok().data("isFull", 0);
     }
+
+////    todo 为课程添加一篇文章
+////    @PostMapping("{courseId}")
+//    public R addArticleForCourse(@PathVariable String courseId){
+//
+//    }
+//    @GetMapping("")
+//    public R getArticleForCourse(){
+//
+//    }
 }
 
