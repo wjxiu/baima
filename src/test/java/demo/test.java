@@ -1,7 +1,9 @@
 package demo;
 
 import cn.hutool.core.net.Ipv4Util;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.gcu.baima.BaimaMain;
 import com.gcu.baima.mapper.AdmissionPlanMapper;
 import com.gcu.baima.service.Back.impl.AdmissionPlanServiceImpl;
@@ -26,11 +28,13 @@ public class test {
 
     @Test
     public void name() {
+        String s = SecureUtil.md5().digestHex("123456");
+        System.out.println(s);
 //        System.out.println(BCrypt.hashpw("123123"));
-        for (int i = 0; i < 100; i++) {
+//        for (int i = 0; i < 100; i++) {
 
-            System.out.println(BCrypt.checkpw("123123", "$2a$10$MQX9xR7QHjFv5iqQmozYUugVQ5RQffrtliwVzH0QN8RrBo4EYLDCS"));
-        }
-//        System.out.println(BCrypt.checkpw("321122", "$2a$10$LmUYMqFJg1aQLiaQidCa3euwAHeLy.tuwrE1sRKI.46xLwylxX5iK"));
+//            System.out.println(BCrypt.checkpw("123123", "$2a$10$MQX9xR7QHjFv5iqQmozYUugVQ5RQffrtliwVzH0QN8RrBo4EYLDCS"));
     }
+//        System.out.println(BCrypt.checkpw("321122", "$2a$10$LmUYMqFJg1aQLiaQidCa3euwAHeLy.tuwrE1sRKI.46xLwylxX5iK"));
+
 }

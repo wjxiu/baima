@@ -1,5 +1,6 @@
 package com.gcu.baima.service.Back.impl;
 
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.baima.entity.Manager;
@@ -32,7 +33,7 @@ public class SignServiceImpl implements SignService {
             throw new BaimaException(201, "登录错误");
         }
         if (StringUtils.isEmpty(loginVo.getUsername()) || StringUtils.isEmpty(loginVo.getPassword())) {
-            throw new BaimaException(201, "登录错误");
+            throw new BaimaException(201, "用户名或密码为空");
         }
 //        管理员
         QueryWrapper<Manager> ManagerQueryWrapper = new QueryWrapper<>();
@@ -41,7 +42,8 @@ public class SignServiceImpl implements SignService {
         if (manager == null) {
             throw new BaimaException(201, "用户名或密码错误");
         }
-        boolean checkpw = BCrypt.checkpw(loginVo.getPassword(), manager.getPassword());
+        String s = SecureUtil.md5().digestHex(loginVo.getPassword());
+        boolean checkpw = s.equalsIgnoreCase(manager.getPassword());
         if (!checkpw) {
             throw new BaimaException(201, "用户名或密码错误");
         }
@@ -49,7 +51,7 @@ public class SignServiceImpl implements SignService {
         return JwtHelper.createToken(manager.getId(), manager.getUsername());
     }
 
-    //    注册,密码使用bcrypt加密
+    //    注册,密码使用md5加密
     @Override
     public void regiester(Manager manager) {
         QueryWrapper<Manager> ManagerQueryWrapper = new QueryWrapper<>();
@@ -58,8 +60,9 @@ public class SignServiceImpl implements SignService {
         if (manager1 != null) {
             throw new BaimaException(201, "用户名重复");
         }
-        String hashpw = BCrypt.hashpw(manager.getPassword());
-        manager.setPassword(hashpw);
+        String s = SecureUtil.md5().digestHex(manager.getPassword());
+//        String hashpw = BCrypt.hashpw(manager.getPassword());
+        manager.setPassword(s);
         managerService.save(manager);
     }
 }

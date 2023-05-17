@@ -101,28 +101,6 @@ public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("�
         return R.ok().data("list", courseVos);
     }
 
-    //    判断该课程是否已满人,满人返回1，未满返回0
-    @ApiOperation(value = "判断该课程是否已满人", notes = "判断结果为isFull，1满人，0为满人")
-    @PostMapping("isFull/{courseId}")
-    public R isFull(@PathVariable String courseId) {
-        Boolean isFull = courseService.isFull(courseId);
-        if (isFull) return R.ok().data("isFull", 1);
-        return R.ok().data("isFull", 0);
-    }
 
-    //   给课程添加一篇宣传文章， 课程id和文章id一致
-    @PostMapping("/addArticleForCourse/{courseId}")
-    public R addArticleForCourse(@PathVariable String courseId, @RequestBody Article article) {
-        article.setId(courseId);
-        articleService.save(article);
-        return R.ok();
-    }
-
-    // 根据课程查询课程的宣传文章
-    @GetMapping("getArticleForCourse/{courseId}")
-    public R getArticleForCourse(@PathVariable String courseId) {
-        ArticleVo vo = articleService.getArticleById(courseId);
-        return R.ok().data("article", vo);
-    }
 }
 
