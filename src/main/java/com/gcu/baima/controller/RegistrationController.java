@@ -67,20 +67,15 @@ public class RegistrationController {
 
 
     @ApiOperation(value = "分页参数", notes = "条件未确定未完成，需要返回vo,不是返回id")
-    @PostMapping("page/{pageNo}/{limit}/{userId}")
+    @PostMapping("page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit,
-                  @ApiParam(required = false) @RequestBody(required = false) HashMap<String, String> map,
-                  @PathVariable String userId) {
+                  @ApiParam(required = false) @RequestBody(required = false) HashMap<String, String> map
+    ) {
         Page<RegistrationVo> registrationPage = new Page<>(pageNo, limit);
         List<RegistrationVo> l = registrationService.pageRegistVo(registrationPage, "1");
         registrationPage.setRecords(l);
         return R.ok().data("pageRegistVo", registrationPage);
     }
-//    前台的
-//    @ApiOperation(value = "查询用户的报名列表")
-//    @GetMapping("myRegist")
-//    public R myRegistration(){
-//
-//    }
+
 }
 

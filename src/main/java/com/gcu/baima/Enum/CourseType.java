@@ -7,9 +7,9 @@ package com.gcu.baima.Enum;
 public enum CourseType {
     //    0：前端 ，1：后端 ，2：大数据，3：UI，4：测试 ，5：运维，Operations
     前端(0), 后端(1), 大数据(2), UI(3), 测试(4), 运维(5);
-    private int value;
+    private Integer value;
 
-    private CourseType(int value) {
+    private CourseType(Integer value) {
         this.value = value;
     }
 
@@ -32,7 +32,7 @@ public enum CourseType {
         }
     }
 
-    public int value() {
+    public Integer value() {
         return this.value;
     }
 }

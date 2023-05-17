@@ -27,4 +27,6 @@ public interface RegistrationService extends IService<Registration> {
     void deny(String userId, String courseId, String managerId);
 
     List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, String id);
+
+    List<RegistrationVo> getUserRegistList(String userId);
 }

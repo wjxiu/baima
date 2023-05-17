@@ -6,9 +6,9 @@ package com.gcu.baima.Enum;
  */
 public enum CustomerJobStatus {
     在读(0), 在职(1), 待业(2), 其他(3);
-    private final int value;
+    private final Integer value;
 
-    public static CustomerJobStatus valueOf(int value) {
+    public static CustomerJobStatus valueOf(Integer value) {
         switch (value) {
             case 0:
                 return 在读;
@@ -25,7 +25,7 @@ public enum CustomerJobStatus {
 //        @ApiModelProperty(value = "自己的状态， 枚举：在读，在职，待业，其他")
 
 
-    CustomerJobStatus(int value) {
+    CustomerJobStatus(Integer value) {
         this.value = value;
     }
 }

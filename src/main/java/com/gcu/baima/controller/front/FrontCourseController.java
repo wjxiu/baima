@@ -24,7 +24,6 @@ import java.util.List;
 public class FrontCourseController {
     @Autowired
     FrontCourseService frontCourseService;
-
     //    获取所有课程，根据课程分类展示
     @GetMapping("")
     public R list() {

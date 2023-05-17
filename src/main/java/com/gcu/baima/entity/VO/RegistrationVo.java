@@ -2,6 +2,7 @@ package com.gcu.baima.entity.VO;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.gcu.baima.Enum.EnrollStatus;
 import lombok.Data;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class RegistrationVo {
     private String courseName;
     private String managerId;
     private String managerName;
+    private EnrollStatus enrollStatus;
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
     @TableField(fill = FieldFill.INSERT_UPDATE)

@@ -54,11 +54,11 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
         Registration registration = new Registration();
         registration.setCustomerId(userId);
         registration.setPerferCourseId(courseId);
-        registration.setEnrollStatus(EnrollStatus.SUCCESS.value());
+        registration.setEnrollStatus(EnrollStatus.成功.value());
         registration.setManagerId(managerId);
         QueryWrapper<Registration> wrapper = new QueryWrapper<Registration>().
                 eq("customer_id", userId).eq("perfer_course_id", courseId)
-                .eq("enroll_status", EnrollStatus.CHECKING.value());
+                .eq("enroll_status", EnrollStatus.审核中.value());
         boolean update = update(registration, wrapper);
         //        报名人数+1
         if (!update) {
@@ -77,7 +77,7 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
         registration.setCustomerId(registrationVo.getCustomer().getId());
         registration.setPerferCourseId(registrationVo.getCourseId());
         //        设置状态为待审核
-        registration.setEnrollStatus(EnrollStatus.CHECKING.value());
+        registration.setEnrollStatus(EnrollStatus.待审核.value());
         boolean save = save(registration);
         if (!b || !save) {
             throw new BaimaException(201, "报名出错");
@@ -89,7 +89,7 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
         Registration registration = new Registration();
         registration.setCustomerId(userId);
         registration.setPerferCourseId(courseId);
-        registration.setEnrollStatus(EnrollStatus.FAILED.value());
+        registration.setEnrollStatus(EnrollStatus.失败.value());
         registration.setManagerId(managerId);
 
         QueryWrapper<Registration> wrapper = new QueryWrapper<Registration>().
@@ -109,5 +109,11 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     @Override
     public List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, String id) {
         return baseMapper.pageRegistVo(id, page);
+    }
+
+    @Override
+    public List<RegistrationVo> getUserRegistList(String userId) {
+        List<RegistrationVo> l = baseMapper.getUserRegistList(userId);
+        return l;
     }
 }

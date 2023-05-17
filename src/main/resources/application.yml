@@ -19,6 +19,8 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:**/xml/*.xml
+  type-enums-package: com.gcu.baima.Enum
+
 #自定义配置
 aliyun:
   oss:

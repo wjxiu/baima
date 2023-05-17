@@ -8,9 +8,9 @@ public enum ManagerType {
     管理员(0), 推广专员(1);
     //      @ApiModelProperty(value = "枚举 ,0管理员，1 推广专员")
 //    private Integer type;
-    private int value;
+    private Integer value;
 
-    public static ManagerType valueOf(int value) {
+    public static ManagerType valueOf(Integer value) {
         switch (value) {
             case 0:
                 return 管理员;
@@ -21,7 +21,7 @@ public enum ManagerType {
         }
     }
 
-    ManagerType(int value) {
+    ManagerType(Integer value) {
         this.value = value;
     }
 

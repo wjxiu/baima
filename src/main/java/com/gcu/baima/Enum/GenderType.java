@@ -6,9 +6,9 @@ package com.gcu.baima.Enum;
  */
 public enum GenderType {
     男(0), 女(1);
-    private final int value;
+    private final Integer value;
 
-    private GenderType(int value) {
+    private GenderType(Integer value) {
         this.value = value;
     }
 
@@ -23,7 +23,7 @@ public enum GenderType {
         }
     }
 
-    public int value() {
+    public Integer value() {
         return this.value;
     }
 }

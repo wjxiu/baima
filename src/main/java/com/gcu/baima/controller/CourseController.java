@@ -4,9 +4,12 @@ package com.gcu.baima.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.Enum.CourseType;
+import com.gcu.baima.entity.Article;
 import com.gcu.baima.entity.Course;
+import com.gcu.baima.entity.VO.ArticleVo;
 import com.gcu.baima.entity.VO.CourseVo;
 import com.gcu.baima.exception.BaimaException;
+import com.gcu.baima.service.Back.ArticleService;
 import com.gcu.baima.service.Back.CourseService;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
@@ -22,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 课程控制器，课程关联的
  * </p>
  *
  * @author WJX
@@ -34,10 +37,12 @@ import java.util.List;
 public class CourseController {
     @Autowired
     CourseService courseService;
+    @Autowired
+    ArticleService articleService;
 
     @ApiOperation("添加课程")
     @PostMapping("")
-    public R addCourse(@ApiParam("课程实体类") @RequestBody Course course) {
+    public R addCourse(@ApiParam("课程实体类") @RequestBody(required = false) Course course) {
         courseService.save(course);
         return R.ok();
     }
@@ -105,14 +110,19 @@ public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("�
         return R.ok().data("isFull", 0);
     }
 
-////    todo 为课程添加一篇文章
-////    @PostMapping("{courseId}")
-//    public R addArticleForCourse(@PathVariable String courseId){
-//
-//    }
-//    @GetMapping("")
-//    public R getArticleForCourse(){
-//
-//    }
+    //   给课程添加一篇宣传文章， 课程id和文章id一致
+    @PostMapping("/addArticleForCourse/{courseId}")
+    public R addArticleForCourse(@PathVariable String courseId, @RequestBody Article article) {
+        article.setId(courseId);
+        articleService.save(article);
+        return R.ok();
+    }
+
+    // 根据课程查询课程的宣传文章
+    @GetMapping("getArticleForCourse/{courseId}")
+    public R getArticleForCourse(@PathVariable String courseId) {
+        ArticleVo vo = articleService.getArticleById(courseId);
+        return R.ok().data("article", vo);
+    }
 }
 

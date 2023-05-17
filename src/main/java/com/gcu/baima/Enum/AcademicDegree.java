@@ -8,13 +8,13 @@ import io.swagger.annotations.ApiModelProperty;
  */
 public enum AcademicDegree {
     高中(0), 大专(1), 本科(2), 研究生(3), 其他(4);
-    private int value;
+    private Integer value;
 
-    private AcademicDegree(int value) {
+    private AcademicDegree(Integer value) {
         this.value = value;
     }
 
-    public static AcademicDegree valueOf(int value) {
+    public static AcademicDegree valueOf(Integer value) {
         switch (value) {
             case 0:
                 return 高中;
@@ -31,7 +31,7 @@ public enum AcademicDegree {
         }
     }
 
-    public int value() {
+    public Integer value() {
         return this.value;
     }
 
