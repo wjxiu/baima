@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcu.baima.mapper.TrailStatMapper">
+    <select id="getCourseRegitCount" resultType="java.util.HashMap">
+        #具体课程试听人数
+        SELECT COUNT(1) AS num, course.`name`, course.id as id
+        FROM `trial_lesson_customer` tlc
+                 LEFT JOIN `trial_lesson` tl ON tl.id = tlc.trail_lession_id
+                 LEFT JOIN course ON course.id = tl.course_id
+        GROUP BY tl.`course_id`
+    </select>
+    <select id="getCourseRate" resultType="java.util.Map">
+        #申请试听不同类型课程人数占比
+        SELECT COUNT(1) AS num, course.`type`, tlc.id
+        FROM `trial_lesson_customer` tlc
+                 LEFT JOIN `trial_lesson` tl ON tl.id = tlc.trail_lession_id
+                 LEFT JOIN course ON course.id = tl.course_id
+        GROUP BY course.`type`
+    </select>
+    <select id="getApplyRate" resultType="java.util.Map">
+        #申请报名不同类型课程人数占比
+        SELECT COUNT(1) AS num, course.`type`, course.id
+        FROM `registration` regist
+                 LEFT JOIN course ON course.id = regist.`perfer_course_id`
+        GROUP BY course.`type`
+    </select>
+    <select id="getAvgRate" resultType="java.util.Map">
+        #具体课程平均评分
+        SELECT AVG(tlcom.score) AS score, course.name, tl.course_id as id
+        FROM `trial_lesson_comment` tlcom
+                 LEFT JOIN `trial_lesson` tl ON tl.`id` = tlcom.`trial_id`
+                 LEFT JOIN `trial_lesson_customer` tlcust ON tlcust.`trail_lession_id` = tl.`id`
+                 LEFT JOIN course ON course.id = tl.course_id
+        GROUP BY tl.`course_id`
+    </select>
+    <select id="getCountByTimeSpan" resultType="java.util.Map">
+        #各个时间段选择情况
+        SELECT CASE
+                   WHEN tl.`start_time` BETWEEN '09:00:00' AND '10:59:59' THEN '9-11时'
+                   WHEN tl.`start_time` BETWEEN '15:00:00' AND '16:59:59' THEN '15-17时'
+                   WHEN tl.`start_time` BETWEEN '20:00:00' AND '21:59:59' THEN '20-22时'
+                   END  AS span,
+               COUNT(*) AS num
+        FROM `trial_lesson` tl
+                 LEFT JOIN `trial_lesson_customer` tlcust ON tlcust.`trail_lession_id` = tl.`id`
+                 LEFT JOIN course ON course.id = tl.course_id
+        WHERE
+              <![CDATA[
+            tl.`start_time` <= tl.`end_time`
+      ]]>
+
+        GROUP BY Span;
+
+    </select>
+</mapper>
