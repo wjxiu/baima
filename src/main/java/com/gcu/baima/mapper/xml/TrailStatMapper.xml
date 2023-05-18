@@ -35,21 +35,11 @@
     </select>
     <select id="getCountByTimeSpan" resultType="java.util.Map">
         #各个时间段选择情况
-        SELECT CASE
-                   WHEN tl.`start_time` BETWEEN '09:00:00' AND '10:59:59' THEN '9-11时'
-                   WHEN tl.`start_time` BETWEEN '15:00:00' AND '16:59:59' THEN '15-17时'
-                   WHEN tl.`start_time` BETWEEN '20:00:00' AND '21:59:59' THEN '20-22时'
-                   END  AS span,
+        SELECT period,
                COUNT(*) AS num
         FROM `trial_lesson` tl
-                 LEFT JOIN `trial_lesson_customer` tlcust ON tlcust.`trail_lession_id` = tl.`id`
-                 LEFT JOIN course ON course.id = tl.course_id
-        WHERE
-              <![CDATA[
-            tl.`start_time` <= tl.`end_time`
-      ]]>
-
-        GROUP BY Span;
-
+                 JOIN `trial_lesson_customer` tlcust ON tlcust.`trail_lession_id` = tl.`id`
+                 JOIN course ON course.id = tl.course_id
+        GROUP BY period;
     </select>
 </mapper>

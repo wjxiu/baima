@@ -40,6 +40,8 @@ public class TrialLessonCustomer implements Serializable {
 
     @ApiModelProperty(value = "顾客试课的id")
     private String trailLessionId;
+    @ApiModelProperty(value = "用户选择的时间段")
+    private Integer period;
 
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;

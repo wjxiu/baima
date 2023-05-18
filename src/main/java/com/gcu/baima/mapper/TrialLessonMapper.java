@@ -7,6 +7,7 @@ import com.gcu.baima.entity.VO.TrialLessonVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -23,4 +24,6 @@ public interface TrialLessonMapper extends BaseMapper<TrialLesson> {
     Integer deleteTrialLessonById(@Param("id") String id);
 
     Page<TrialLessonVo> pageTrialLesson(Page<TrialLessonVo> trialLessonPage, HashMap<String, String> map);
+
+    List<TrialLessonVo> getTrialByUserId(String userId);
 }

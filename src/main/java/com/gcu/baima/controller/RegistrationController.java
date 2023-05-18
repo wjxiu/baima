@@ -53,14 +53,14 @@ public class RegistrationController {
 
     @ApiOperation(value = "同意用户的报名", notes = "测试传managerId,上线时不用传，从token中获取")
     @GetMapping("agree")
-    public R agree(String userId, String courseId, @CurrentUserId String managerId) {
+    public R agree(String userId, String courseId, String managerId) {
         registrationService.agree(userId, courseId, managerId);
         return R.ok();
     }
 
     @ApiOperation(value = "拒绝用户的报名", notes = "没有删除报名信息")
     @DeleteMapping("deny")
-    public R deny(String userId, String courseId, @CurrentUserId String managerId) {
+    public R deny(String userId, String courseId, String managerId) {
         registrationService.deny(userId, courseId, managerId);
         return R.ok();
     }

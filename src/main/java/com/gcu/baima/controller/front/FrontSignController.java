@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  */
 @Api(tags = "前台登录注册controller")
 @RequestMapping("/baima/front/sign")
-@RestController()
+@RestController
 public class FrontSignController {
     @Resource
     FrontSignService frontSignService;

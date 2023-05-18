@@ -39,15 +39,6 @@ public class TrialLesson implements Serializable {
     @ApiModelProperty(value = "关联的课程id")
     private String courseId;
 
-    @ApiModelProperty(value = "试课开始时间，传入格式必须为yyyy-MM-dd hh:mm:ss,保存时忽略前面日期")
-    private Date startTime;
-
-    @ApiModelProperty(value = "试课结束时间，传入格式yyyy-MM-dd hh:mm:ss,保存时忽略前面日期")
-    private Date endTime;
-
-    @ApiModelProperty(value = "试课日期，传入格式yyyy-MM-dd hh:mm:ss,保存时忽略后面时间")
-    private Date date;
-
     @ApiModelProperty(value = "地点")
     private String location;
     @ApiModelProperty(value = "当前人数")

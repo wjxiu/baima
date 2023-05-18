@@ -3,6 +3,7 @@ package com.gcu.baima.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gcu.baima.entity.Customer;
 import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonCustomer;
 import com.gcu.baima.entity.VO.TrialLessonVo;
@@ -60,29 +61,6 @@ public class TrialLessonController {
     }
 
 
-    //    申请试听，不做人数限制，但是记录人数
-    @ApiOperation("用户申请试课")
-    @PostMapping("apply")
-    public R apply(String customerId, String trialLessionId) {
-//        判断参数
-        if (StringUtils.isEmpty(customerId) || StringUtils.isEmpty(trialLessionId)) {
-            throw new BaimaException(201, "缺少必要参数");
-        }
-//  申请试听
-        trialLessonService.apply(customerId, trialLessionId);
-        return R.ok();
-    }
-
-    //    取消申请
-    @ApiOperation("用户取消申请试课")
-    @PostMapping("withdraw")
-    public R withdraw(String customerId, String trialLessionId) {
-        if (StringUtils.isEmpty(customerId) || StringUtils.isEmpty(trialLessionId)) {
-            throw new BaimaException(201, "缺少必要参数");
-        }
-        trialLessonService.withdraw(customerId, trialLessionId);
-        return R.ok();
-    }
 
     // 分页，参数未确定
     @ApiOperation("分页查询课程")

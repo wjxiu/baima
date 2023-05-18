@@ -25,14 +25,14 @@ public class CodeGenerator {
      */
 //    输出路径，修改为自己项目的路径，不用加src/main
     public static final String OUTPUTPATH = "D:\\Code\\baima";
-//    作者名称
+    //    作者名称
     public static final String AUTHOR = "WJX";
-//    数据库用户名
+    //    数据库用户名
     public static final String DataSourceUSERNAME = "root";
-//    数据库密码
+    //    数据库密码
     public static final String DataSourceUSERPASSWORD = "190112";
-//    逆向生成的数据库表
-    public static final String TABLENAME = "article";
+    //    逆向生成的数据库表
+    public static final String TABLENAME = "trial_lesson";
 
     @Test
     public void run() {
@@ -55,7 +55,7 @@ public class CodeGenerator {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/baima?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/baima?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&allowMultiQueries=true");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername(DataSourceUSERNAME);
         dsc.setPassword(DataSourceUSERPASSWORD);
@@ -81,7 +81,7 @@ public class CodeGenerator {
                 // to do nothing
             }
         };
-        String templatePath = "/templates/mapper.xml.vm";
+        String templatePath = "/templates/mapper.xml";
         //5.1 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         //5.2 自定义配置会被优先输出

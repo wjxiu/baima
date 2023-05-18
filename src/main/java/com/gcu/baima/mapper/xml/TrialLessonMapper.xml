@@ -14,32 +14,37 @@
     </delete>
 
     <select id="getTrialById" resultType="com.gcu.baima.entity.VO.TrialLessonVo">
-        select tl.id,
-               tl.date,
-               tl.location,
-               tl.start_time,
-               tl.end_time,
-               tl.curr_customer_num as currNum,
-               tl.gmt_modified      as gmtModified,
-               tl.gmt_create        as gmtCreate,
-               course.name          as courseName,
-               course.id            as courseId
+        select
+        <include refid="selectCommon"></include>
         from trial_lesson tl
-                 left join course on tl.course_id = course.id
+        left join course on tl.course_id = course.id
         where tl.id = #{id}
     </select>
     <select id="pageTrialLesson" resultType="com.gcu.baima.entity.VO.TrialLessonVo">
-        select tl.id,
-               tl.date,
+        select
+        <include refid="selectCommon"></include>
+        from trial_lesson tl
+        left join course on tl.course_id = course.id
+    </select>
+    <select id="getTrialByUserId" resultType="com.gcu.baima.entity.VO.TrialLessonVo">
+        select
+        <include refid="selectCommon"></include>,
+        tlcust.period
+        from trial_lesson tl
+        left join trial_lesson_customer tlcust on tl.id = tlcust.trail_lession_id
+        left join course on tl.course_id = course.id
+        where tlcust.customer_id = #{id}
+    </select>
+    <sql id="selectCommon">
+        tl
+        .
+        id
+        ,
                tl.location,
-               tl.start_time,
-               tl.end_time,
                tl.curr_customer_num as currNum,
                tl.gmt_modified      as gmtModified,
                tl.gmt_create        as gmtCreate,
                course.name          as courseName,
                course.id            as courseId
-        from trial_lesson tl
-                 left join course on tl.course_id = course.id
-    </select>
+    </sql>
 </mapper>
