@@ -72,7 +72,7 @@ public class RegistrationController {
                   @ApiParam(required = false) @RequestBody(required = false) HashMap<String, String> map
     ) {
         Page<RegistrationVo> registrationPage = new Page<>(pageNo, limit);
-        List<RegistrationVo> l = registrationService.pageRegistVo(registrationPage, "1");
+        List<RegistrationVo> l = registrationService.pageRegistVo(registrationPage);
         registrationPage.setRecords(l);
         return R.ok().data("pageRegistVo", registrationPage);
     }

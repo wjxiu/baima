@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface RegistrationMapper extends BaseMapper<Registration> {
 
-    List<RegistrationVo> pageRegistVo(@Param("id") String id, Page<RegistrationVo> page);
+    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page);
 
     List<RegistrationVo> getUserRegistList(String userId);
 }

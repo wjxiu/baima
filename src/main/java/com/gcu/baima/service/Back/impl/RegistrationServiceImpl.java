@@ -107,8 +107,8 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     }
 
     @Override
-    public List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, String id) {
-        return baseMapper.pageRegistVo(id, page);
+    public List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page) {
+        return baseMapper.pageRegistVo(page);
     }
 
     @Override
