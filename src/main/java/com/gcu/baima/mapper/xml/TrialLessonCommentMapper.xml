@@ -11,7 +11,8 @@
                customer.`name` AS customerName,
                course.`id`     as courseId
         FROM `trial_lesson_comment` tlc
-                 LEFT JOIN `course` ON tlc.trial_id = course.`id`
+                 left join trial_lesson tl on tlc.trial_id = tl.id
+                 LEFT JOIN `course` ON tl.course_id = course.`id`
                  LEFT JOIN `customer` ON customer.`id` = tlc.customer_id
 
     </select>
