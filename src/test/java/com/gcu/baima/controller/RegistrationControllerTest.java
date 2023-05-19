@@ -45,9 +45,9 @@ class RegistrationControllerTest {
 
     @Test
     void page() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("status", 0);
-        R page = registrationController.page(1L, 555L, map);
+        Registration registration = new Registration();
+        registration.setEnrollStatus(0);
+        R page = registrationController.page(1L, 555L, registration);
         log.info(JSONUtil.toJsonStr(page));
     }
 }

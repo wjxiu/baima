@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.gcu.baima.entity.DTO.RegistrationDto;
 import com.gcu.baima.entity.VO.RegistrationVo;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public interface RegistrationService extends IService<Registration> {
 
     void deny(String userId, String courseId, String managerId);
 
-    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, HashMap<String, Object> map);
+    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, Registration map);
 
     List<RegistrationVo> getUserRegistList(String userId);
 }

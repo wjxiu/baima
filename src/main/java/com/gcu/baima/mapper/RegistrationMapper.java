@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface RegistrationMapper extends BaseMapper<Registration> {
 
-    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, HashMap<String, Object> map);
+    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, Registration map);
 
     List<RegistrationVo> getUserRegistList(String userId);
 }

@@ -72,7 +72,7 @@ public class RegistrationController {
     @ApiOperation(value = "分页参数", notes = "条件未确定未完成，需要返回vo,不是返回id")
     @PostMapping("page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit,
-                  @ApiParam(required = false) @RequestBody(required = false) HashMap<String, Object> map
+                  @ApiParam(required = false) @RequestBody(required = false) Registration map
     ) {
         Page<RegistrationVo> registrationPage = new Page<>(pageNo, limit);
         List<RegistrationVo> l = registrationService.pageRegistVo(registrationPage, map);
