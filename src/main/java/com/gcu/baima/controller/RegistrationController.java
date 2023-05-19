@@ -13,6 +13,7 @@ import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import java.util.List;
  * @since 2023-05-08
  */
 @Api(tags = "报名控制器")
+@Slf4j
 @RestController
 @RequestMapping("/baima/registration")
 public class RegistrationController {
@@ -39,6 +41,7 @@ public class RegistrationController {
     @ApiOperation("提交报名课程,同时更新用户信息")
     @PostMapping("enroll")
     public R enroll(@ApiParam("报名信息，用户信息和课程id") @RequestBody RegistrationDto registrationVo) {
+        log.info("{}", registrationVo);
         registrationService.addRegistration(registrationVo);
         return R.ok();
     }

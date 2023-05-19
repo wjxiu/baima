@@ -11,6 +11,7 @@ import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.mapper.RegistrationMapper;
 import com.gcu.baima.service.Back.CourseService;
 import com.gcu.baima.service.Back.CustomerService;
+import com.gcu.baima.service.Back.ManagerService;
 import com.gcu.baima.service.Back.RegistrationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +34,16 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     CourseService courseService;
     @Autowired
     CustomerService customerService;
+    @Autowired
+    ManagerService managerService;
 
     //检查用户是否能报名课程
     @Override
     public Boolean check(String userId, String courseId) {
+        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(courseId)) throw new BaimaException(201, "缺少必要参数");
         QueryWrapper<Registration> wrapper = new QueryWrapper<>();
         wrapper.eq("customer_id", userId).eq("perfer_course_id", courseId).eq("enroll_status", 0);
         int count = count(wrapper);
-        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(courseId)) throw new BaimaException(201, "缺少必要参数");
         if (customerService.getById(userId) == null) throw new BaimaException(201, "用户为空");
         if (courseService.getById(courseId) == null) throw new BaimaException(201, "没有该门课程");
         if (count > 0) throw new BaimaException(201, "你已报名了该课程");
@@ -52,14 +55,18 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
 
     @Override
     public void agree(String userId, String courseId, String managerId) {
+        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(courseId) || StringUtils.isEmpty(managerId))
+            throw new BaimaException(201, "缺少必要参数");
+        if (customerService.getById(userId) == null || courseService.getById(courseId) == null || managerService.getById(managerId) == null)
+            throw new BaimaException(201, "无用户或课程或管理员");
         Registration registration = new Registration();
         registration.setCustomerId(userId);
         registration.setPerferCourseId(courseId);
         registration.setEnrollStatus(EnrollStatus.成功.value());
         registration.setManagerId(managerId);
         QueryWrapper<Registration> wrapper = new QueryWrapper<Registration>().
-                eq("customer_id", userId).eq("perfer_course_id", courseId)
-                .eq("enroll_status", EnrollStatus.审核中.value());
+                eq("customer_id", userId).eq("perfer_course_id", courseId);
+//                .eq("enroll_status", EnrollStatus.审核中.value());
         boolean update = update(registration, wrapper);
         //        报名人数+1
         if (!update) {
