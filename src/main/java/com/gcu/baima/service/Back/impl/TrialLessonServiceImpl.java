@@ -10,6 +10,7 @@ import com.gcu.baima.entity.TrialLessonCustomer;
 import com.gcu.baima.entity.VO.TrialLessonVo;
 import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.mapper.TrialLessonMapper;
+import com.gcu.baima.service.Back.CourseService;
 import com.gcu.baima.service.Back.CustomerService;
 import com.gcu.baima.service.Back.TrialLessonCustomerService;
 import com.gcu.baima.service.Back.TrialLessonService;
@@ -36,13 +37,16 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
     TrialLessonCustomerService trialLessonCustomerService;
     @Autowired
     CustomerService customerService;
+    @Autowired
+    CourseService courseService;
 
     @Override
     public void apply(TrialLessonApplyDto trialLessonApplyDto) {
+
         String userId = trialLessonApplyDto.getUserId();
         String trialLessonId = trialLessonApplyDto.getTrialLessonId();
-        if (StringUtils.isEmpty(userId)) {
-            throw new BaimaException(201, "id为空");
+        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(trialLessonApplyDto.getTrialLessonId())) {
+            throw new BaimaException(201, "缺少必要参数");
         }
         Customer customer = BeanUtil.copyProperties(trialLessonApplyDto, Customer.class);
         customer.setId(trialLessonApplyDto.getUserId());

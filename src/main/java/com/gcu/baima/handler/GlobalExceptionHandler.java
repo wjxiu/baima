@@ -20,8 +20,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public R error(Exception e) {
+        Throwable cause = e.getCause();
         e.printStackTrace();
-        return R.error().message("执行了全局异常处理..");
+        String message = cause.getMessage();
+        return R.error().message("执行了全局异常处理.." + message);
     }
     //自定义异常
     @ExceptionHandler(BaimaException.class)

@@ -15,6 +15,7 @@ import com.gcu.baima.service.Back.RegistrationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -39,13 +40,13 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
         QueryWrapper<Registration> wrapper = new QueryWrapper<>();
         wrapper.eq("customer_id", userId).eq("perfer_course_id", courseId).eq("enroll_status", 0);
         int count = count(wrapper);
-        if (count > 0) {
-            throw new BaimaException(201, "你已报名了该课程");
-        }
+        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(courseId)) throw new BaimaException(201, "缺少必要参数");
+        if (customerService.getById(userId) == null) throw new BaimaException(201, "用户为空");
+        if (courseService.getById(courseId) == null) throw new BaimaException(201, "没有该门课程");
+        if (count > 0) throw new BaimaException(201, "你已报名了该课程");
         Boolean full = courseService.isFull(courseId);
-        if (full) {
-            throw new BaimaException(201, "课程已满，等待下次开课");
-        }
+        if (full) throw new BaimaException(201, "课程已满，等待下次开课");
+
         return true;
     }
 
