@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.RegistrationMapper">
 
-    <select id="pageRegistVo" resultType="com.gcu.baima.entity.VO.RegistrationVo">
+    <select id="pageRegistVo" resultType="com.gcu.baima.entity.VO.RegistrationVo" parameterType="hashmap">
         SELECT
         <include refid="selectCommon"/>
         FROM `registration` r
         LEFT JOIN `customer` c ON r.customer_id = c.id
         LEFT JOIN course ON course.id = r.perfer_course_id
         LEFT JOIN `manager` m ON r.manager_id = m.id
+        where r.enroll_status =#{map.status}
     </select>
     <select id="getUserRegistList" resultType="com.gcu.baima.entity.VO.RegistrationVo">
         SELECT

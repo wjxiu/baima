@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -115,8 +116,8 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     }
 
     @Override
-    public List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page) {
-        return baseMapper.pageRegistVo(page);
+    public List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, HashMap<String, Object> map) {
+        return baseMapper.pageRegistVo(page, map);
     }
 
     @Override

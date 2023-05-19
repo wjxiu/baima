@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gcu.baima.entity.VO.RegistrationVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public interface RegistrationMapper extends BaseMapper<Registration> {
 
-    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page);
+    List<RegistrationVo> pageRegistVo(Page<RegistrationVo> page, HashMap<String, Object> map);
 
     List<RegistrationVo> getUserRegistList(String userId);
 }
