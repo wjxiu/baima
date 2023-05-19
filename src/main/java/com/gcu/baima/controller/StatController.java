@@ -1,5 +1,6 @@
 package com.gcu.baima.controller;
 
+import com.gcu.baima.Enum.CourseType;
 import com.gcu.baima.mapper.TrailStatMapper;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
@@ -35,14 +36,29 @@ public class StatController {
     @ApiOperation("申请试听不同类型课程人数占比")
     @GetMapping("/getCourseRate")
     public List<Map<String, Object>> getCourseRate() {
-        return trailStatMapper.getCourseRate();
+        List<Map<String, Object>> courseRate = trailStatMapper.getCourseRate();
+        for (int i = 0; i < courseRate.size(); i++) {
+            Map<String, Object> stringObjectMap = courseRate.get(i);
+            Integer type = (Integer) stringObjectMap.get("type");
+            CourseType courseType = CourseType.valueOf(type);
+            stringObjectMap.put("type", courseType.toString());
+        }
+        return courseRate;
     }
 
     //    申请报名不同类型课程人数占比
     @ApiOperation("申请报名不同类型课程人数占比")
     @GetMapping("/getApplyRate")
     public List<Map<String, Object>> getApplyRate() {
-        return trailStatMapper.getApplyRate();
+        List<Map<String, Object>> applyRate = trailStatMapper.getApplyRate();
+        for (int i = 0; i < applyRate.size(); i++) {
+            Map<String, Object> stringObjectMap = applyRate.get(i);
+            Integer type = (Integer) stringObjectMap.get("type");
+            CourseType courseType = CourseType.valueOf(type);
+            stringObjectMap.put("type", courseType.toString());
+//            stringObjectMap.put("type",courseType.getValue().toString());
+        }
+        return applyRate;
     }
 
     //    具体课程平均评分

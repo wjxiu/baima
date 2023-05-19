@@ -28,9 +28,9 @@
         #具体课程平均评分
         SELECT AVG(tlcom.score) AS score, course.name, tl.course_id as id
         FROM `trial_lesson_comment` tlcom
-                 LEFT JOIN `trial_lesson` tl ON tl.`id` = tlcom.`trial_id`
-                 LEFT JOIN `trial_lesson_customer` tlcust ON tlcust.`trail_lession_id` = tl.`id`
-                 LEFT JOIN course ON course.id = tl.course_id
+                 JOIN `trial_lesson` tl ON tl.`id` = tlcom.`trial_id`
+                 JOIN `trial_lesson_customer` tlcust ON tlcust.`trail_lession_id` = tl.`id`
+                 JOIN course ON course.id = tl.course_id
         GROUP BY tl.`course_id`
     </select>
     <select id="getCountByTimeSpan" resultType="java.util.Map">

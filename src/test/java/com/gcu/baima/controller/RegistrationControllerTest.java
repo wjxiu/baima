@@ -6,6 +6,7 @@ import com.gcu.baima.entity.Registration;
 import com.gcu.baima.mapper.RegistrationMapper;
 import com.gcu.baima.utils.R;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class RegistrationControllerTest {
     @Autowired
     RegistrationController registrationController;
-
     @Test
     void enroll() {
     }
@@ -37,16 +37,18 @@ class RegistrationControllerTest {
 
     @Test
     void agree() {
+
     }
 
     @Test
     void deny() {
+        registrationController.deny("666666", "2", "88888");
     }
 
     @Test
     void page() {
         Registration registration = new Registration();
-        registration.setEnrollStatus(0);
+        registration.setEnrollStatus(6);
         R page = registrationController.page(1L, 555L, registration);
         log.info(JSONUtil.toJsonStr(page));
     }

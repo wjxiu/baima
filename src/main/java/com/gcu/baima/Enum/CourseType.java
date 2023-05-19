@@ -32,6 +32,10 @@ public enum CourseType {
         }
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
     public Integer value() {
         return this.value;
     }
