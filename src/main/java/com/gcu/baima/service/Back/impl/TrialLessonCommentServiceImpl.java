@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.TrialLessonComment;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
+import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.mapper.TrialLessonCommentMapper;
+import com.gcu.baima.service.Back.CustomerService;
 import com.gcu.baima.service.Back.TrialLessonCommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -22,6 +25,8 @@ import java.util.HashMap;
  */
 @Service
 public class TrialLessonCommentServiceImpl extends ServiceImpl<TrialLessonCommentMapper, TrialLessonComment> implements TrialLessonCommentService {
+    @Autowired
+    CustomerService customerService;
 
     @Override
     public IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, HashMap<String, String> map) {
@@ -32,10 +37,26 @@ public class TrialLessonCommentServiceImpl extends ServiceImpl<TrialLessonCommen
 
     @Override
     public Boolean isRate(String trialLessonId, String customerId) {
+        if (getById(trialLessonId) == null) {
+            throw new BaimaException(201, "没有这门课程");
+        }
+        if (customerService.getById(customerId) == null) {
+            throw new BaimaException(201, "没有这个用户");
+        }
         QueryWrapper<TrialLessonComment> wrapper = new QueryWrapper<>();
         wrapper.eq("trial_id", trialLessonId)
                 .eq("customer_id", customerId);
         int count = count(wrapper);
         return count > 0;
+    }
+
+    @Override
+    public void addCommont(TrialLessonComment comment) {
+        String trialId = comment.getTrialId();
+        String customerId = comment.getCustomerId();
+        if (isRate(trialId, customerId)) {
+            throw new BaimaException(201, "已经评价，请勿重复评价");
+        }
+        save(comment);
     }
 }

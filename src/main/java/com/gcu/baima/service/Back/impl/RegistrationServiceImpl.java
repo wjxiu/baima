@@ -94,6 +94,9 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
 
     @Override
     public void deny(String userId, String courseId, String managerId) {
+        if (customerService.getById(userId) == null) throw new BaimaException(201, "用户不存在");
+        if (courseService.getById(courseId) == null) throw new BaimaException(201, "课程不存在");
+        if (managerService.getById(managerId) == null) throw new BaimaException(201, "管理员不存在");
         Registration registration = new Registration();
         registration.setCustomerId(userId);
         registration.setPerferCourseId(courseId);
@@ -121,6 +124,9 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
 
     @Override
     public List<RegistrationVo> getUserRegistList(String userId) {
+        if (customerService.getById(userId) == null) {
+            throw new BaimaException(201, "用户不存在");
+        }
         List<RegistrationVo> l = baseMapper.getUserRegistList(userId);
         return l;
     }

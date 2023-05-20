@@ -38,8 +38,11 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
     @Autowired
     CustomerService customerService;
     @Autowired
+    TrialLessonService trialLessonService;
+    @Autowired
     CourseService courseService;
 
+    //随机分配给某一个试听课程
     @Override
     public void apply(TrialLessonApplyDto trialLessonApplyDto) {
 
@@ -50,6 +53,8 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
         }
         Customer customer = BeanUtil.copyProperties(trialLessonApplyDto, Customer.class);
         customer.setId(trialLessonApplyDto.getUserId());
+        TrialLesson byId = trialLessonService.getById(trialLessonId);
+        if (byId == null) throw new BaimaException(201, "没有这门试听课程");
         //        判断用户是否试听过
         QueryWrapper<TrialLessonCustomer> wrapper = new QueryWrapper<TrialLessonCustomer>().eq("customer_id", userId)
                 .eq("trail_lession_id", trialLessonId);

@@ -4,8 +4,10 @@ package com.gcu.baima.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gcu.baima.entity.AdmissionPlan;
 import com.gcu.baima.entity.VO.AdmissionVo;
+import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.service.Back.AdmissionPlanService;
 import com.gcu.baima.service.Back.ArticleService;
+import com.gcu.baima.utils.CheckDBUtil;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +35,7 @@ public class AdmissionPlanController {
     @ApiOperation("根据id查询招生计划")
     @GetMapping("{id}")
     public R getById(@ApiParam("招生计划id") @PathVariable String id) {
+        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, id)) throw new BaimaException(201, "查无此数据");
         AdmissionVo byId = admissionPlanService.getAdminssionById(id);
         return R.ok().data("admission", byId);
     }

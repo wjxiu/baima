@@ -20,4 +20,6 @@ public interface TrialLessonCommentService extends IService<TrialLessonComment> 
     IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, HashMap<String, String> map);
 
     Boolean isRate(String courseId, String customerId);
+
+    void addCommont(TrialLessonComment comment);
 }

@@ -37,7 +37,7 @@ public class TrialLessonController {
     TrialLessonCustomerService trialLessonCustomerService;
 
 
-    @ApiOperation("添加一个试课")
+    @ApiOperation("添加一个试课，试课的id和课程id相同")
     @PostMapping("")
     public R add(@RequestBody TrialLesson trialLesson) {
         trialLessonService.save(trialLesson);
@@ -59,9 +59,6 @@ public class TrialLessonController {
         trialLessonService.deleteTrialLessonById(id);
         return R.ok();
     }
-
-
-
     // 分页，参数未确定
     @ApiOperation("分页查询课程")
     @PostMapping("page/{pageNo}/{limit}")

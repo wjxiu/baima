@@ -1,12 +1,8 @@
 package com.gcu.baima.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
 
@@ -25,6 +21,7 @@ import lombok.experimental.Accessors;
  * @since 2023-05-08
  */
 @Data
+@TableName("trial_lesson_comment")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="TrialLessonComment对象", description="")

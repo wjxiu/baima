@@ -28,6 +28,7 @@ public class ConstantProperties implements InitializingBean {
     public static String BUCKET_NAME;
     public static String BASEPATH;
 
+
     @Override
     public void afterPropertiesSet() throws Exception {
         END_POINT = endpoint;

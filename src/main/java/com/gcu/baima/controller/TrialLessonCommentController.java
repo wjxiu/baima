@@ -38,7 +38,7 @@ public class TrialLessonCommentController {
 
     @PostMapping("")
     public R add(@RequestBody TrialLessonComment Comment) {
-        commentService.save(Comment);
+        commentService.addCommont(Comment);
         return R.ok();
     }
 
