@@ -17,6 +17,7 @@
 
     margin-top: 5%;">
 </div>
+<!-- 客服需要登录才能使用，这里临时使用timestamp代替，后续替换为招生专员表的id-->
 <script>
     var uid = Date.now();
     var websocket = null;
@@ -43,10 +44,10 @@
         document.getElementById("infoData").innerHTML = html + "接受到消息：" + event.data + "</br>";
     }
 
-    //todo修改为服务器端代码
     function send() {
         model.fromType = "KF"
         model.fromId
+        //todo 客服id从页面获取，或者传token
         model.toId = document.getElementById("toId").value;
         console.log('这是客服发送的toid')
         model.message = document.getElementById("message").value

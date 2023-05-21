@@ -1,13 +1,17 @@
 package com.gcu.baima.server;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.util.RandomUtil;
 import com.gcu.baima.encoder.BaseInfoModelEncoder;
 import com.gcu.baima.encoder.BaseResponseMessageEncoder;
+import com.gcu.baima.entity.ChatLog;
 import com.gcu.baima.model.BaseResponseMessage;
 import com.gcu.baima.model.UserMessageModel;
+import com.gcu.baima.service.Back.ChatLogService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -15,10 +19,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,6 +30,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @ServerEndpoint(value = "/api/websocket/{type}/{id}", encoders = {BaseInfoModelEncoder.class, BaseResponseMessageEncoder.class})
 public class WebSocketServer {
+    //由于加上了@ServerEndpoint，所以这个是不被springboot管理的，需要特殊设置一下
+    private static ChatLogService chatLogService;
+
+    @Autowired
+    public void setChatLogService(ChatLogService chatLogService) {
+        WebSocketServer.chatLogService = chatLogService;
+    }
+
     //    在线所有链接 id---在线用户和客服的socket的session
     public static HashMap<String, Session> sessionMap = new HashMap<>();
     //    保存客服map
@@ -65,9 +74,6 @@ public class WebSocketServer {
             onlineClient.addAndGet(1);
             sessionMap.put(clientId, session);
         }
-        /**
-         * todo 消息补偿
-         */
 //        if (!CollectionUtils.isEmpty(offlineUserMessMap)&&offlineUserMessMap.containsKey(clientId)) {
 //            Queue<UserMessageModel> userMessageModels = offlineUserMessMap.get(clientId);
 //            UserMessageModel poll ;
@@ -78,13 +84,9 @@ public class WebSocketServer {
 ////            移出下线用户消息队列
 //            offlineUserMessMap.remove(clientId);
 //        }
-
-
         log.info("当前人数为：{}", onlineClient.get());
         log.info("链接成功,id:{}", clientId);
     }
-
-    //用户发送第一条信息，客服回复一条信息，会出bug,客服没收到，但是用户收到，并且客服回复的fromid和toId一样
     @OnMessage()
     public void OnMessage(Session session, String mess, @PathParam("id") String clientId) {
         Gson gson = new Gson();
@@ -92,10 +94,20 @@ public class WebSocketServer {
         String fromId = userMessageModel.getFromId();
         String fromType = userMessageModel.getFromType();
         String message = userMessageModel.getMessage();
+
         if (mess == null) {
             this.sendMessage(BaseResponseMessage.error("", "传递参数结构异常"));
             return;
         }
+//         消息持久化,没有判断是否离线
+        ChatLog chatLog = new ChatLog();
+        chatLog.setContext(message);
+        chatLog.setSendTime(new Date());
+        chatLog.setMangerId(id);
+        String host = session.getRequestURI().getHost();
+        long ip = Ipv4Util.ipv4ToLong(host);
+        chatLog.setFromIp(ip);
+        chatLogService.save(chatLog);
 //        if (!sessionMap.containsKey(acceptId)){
 ////            添加到离线用户消息列表
 //            Queue<UserMessageModel> list = offlineUserMessMap.getOrDefault(acceptId, new LinkedList<>());
@@ -105,8 +117,6 @@ public class WebSocketServer {
 //            log.info("客户端:{} 发送消息到接受端:{} 不在线，放置到代发送列表，当前待发送列表:{}条",clientId, acceptId,list.size());
 //        }else{
 //        }
-//            todo 将userMessageModel的acceptid改为从客服map中随机挑选一个id
-
 //            是用户
         if (fromType.equalsIgnoreCase("USER")) {
 //            绑定客服
@@ -132,7 +142,6 @@ public class WebSocketServer {
 //              是客服
             userMessageModel.setFromType("KF");
             userMessageModel.setToType("USER");
-
 //            String toId = userMessageModel.getToId();
 //            userMessageModel.setToId(userMessageModel.getFromId());
             userMessageModel.setFromId(id);
@@ -173,7 +182,6 @@ public class WebSocketServer {
         }
     }
 
-    //               todo 持久化消息
     public void sendMessage(Object mess) {
         try {
             if (mess instanceof String) {
@@ -195,18 +203,6 @@ public class WebSocketServer {
         int i = RandomUtil.randomInt(0, list.size());
         return list.get(i);
     }
-//    public String getUserSessionFromKFId(String KFId) {
-//        boolean b = bindKfClients.containsValue(KFId);
-//        if (!b) return null;
-//        final String[] userKey = {""};
-//        bindKfClients.forEach((key, value) -> {
-//            if (value.equals(KFId)) {
-//                userKey[0] = key;
-//            }
-//        });
-//        return userKey[0];
-//    }
-
     //    用户随机绑定一个客服，直到用户或客服下线
     public String userBindRandomKF(String userId) {
         //            否，绑定一个客服

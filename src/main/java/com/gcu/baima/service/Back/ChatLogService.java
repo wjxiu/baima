@@ -3,9 +3,11 @@ package com.gcu.baima.service.Back;
 import com.gcu.baima.entity.ChatLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author WJX
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ChatLogService extends IService<ChatLog> {
 
+    void add(ChatLog chatLog, HttpServletRequest request);
 }

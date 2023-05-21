@@ -31,16 +31,12 @@ public class ChatLogController {
     @Autowired
     ChatLogService chatLogService;
 
-    @ApiOperation(value = "添加一条聊天记录", notes = "ip，sendTime不用传")
-    @PostMapping("")
-    public R add(@RequestBody ChatLog chatLog, HttpServletRequest request) {
-//        设置ip,如果ip出错，默认值为1
-        String remoteAddr = request.getRemoteAddr();
-        long l = Ipv4Util.ipv4ToLong(remoteAddr, 1);
-        chatLog.setFromIp(l);
-        chatLogService.save(chatLog);
-        return R.ok();
-    }
+//    @ApiOperation(value = "添加一条聊天记录", notes = "ip，sendTime不用传")
+//    @PostMapping("")
+public R add(@RequestBody ChatLog chatLog, HttpServletRequest request) {
+    chatLogService.add(chatLog, request);
+    return R.ok();
+}
 
     @PostMapping("/page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit, @RequestBody HashMap<String, String> map) {
