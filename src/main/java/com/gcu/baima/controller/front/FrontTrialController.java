@@ -32,7 +32,6 @@ public class FrontTrialController {
     @ApiOperation("用户申请试课")
     @PostMapping("apply")
     public R apply(@RequestBody TrialLessonApplyDto trialLessonApplyDto) {
-//        判断参数
 //          申请试听
         trialLessonService.apply(trialLessonApplyDto);
         return R.ok();
@@ -41,11 +40,8 @@ public class FrontTrialController {
     //    取消申请
     @ApiOperation("用户取消申请试课")
     @PostMapping("withdraw")
-    public R withdraw(String customerId, String trialLessionId) {
-        if (StringUtils.isEmpty(customerId) || StringUtils.isEmpty(trialLessionId)) {
-            throw new BaimaException(201, "缺少必要参数");
-        }
-        trialLessonService.withdraw(customerId, trialLessionId);
+    public R withdraw(String customerId, String courseId) {
+        trialLessonService.withdraw(customerId, courseId);
         return R.ok();
     }
 
@@ -54,6 +50,14 @@ public class FrontTrialController {
     public R getTrialByUserId(String userId) {
         List<TrialLessonVo> trialVos = trialLessonService.getTrialByUserId(userId);
         return R.ok().data("list", trialVos);
+    }
+
+    @ApiOperation("判断用户是否申请试听过课程")
+    @GetMapping("isApply")
+    public R isApply(String userId, String courseId) {
+        Boolean b = trialLessonService.isApply(userId, courseId);
+        if (b) return R.ok().data("isApply", 1).message("已申请");
+        return R.error().data("isApply", 0).message("未申请");
     }
 
 }

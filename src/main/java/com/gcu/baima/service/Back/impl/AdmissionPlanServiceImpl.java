@@ -3,16 +3,16 @@ package com.gcu.baima.service.Back.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gcu.baima.Enum.CourseType;
 import com.gcu.baima.entity.AdmissionPlan;
 import com.gcu.baima.entity.Article;
+import com.gcu.baima.entity.ArticleCategory;
 import com.gcu.baima.entity.VO.AdmissionVo;
 import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.mapper.AdmissionPlanMapper;
-import com.gcu.baima.service.Back.AdmissionPlanService;
+import com.gcu.baima.service.Back.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.gcu.baima.service.Back.ArticleService;
-import com.gcu.baima.service.Back.CourseService;
-import com.gcu.baima.service.Back.ManagerService;
+import com.gcu.baima.utils.CheckDBUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,8 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     ArticleService articleService;
     @Autowired
     ManagerService managerService;
+    @Autowired
+    ArticleCategoryService articleCategoryService;
 
     /**
      * todo:换为自定义查询语句分页
@@ -55,16 +57,20 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     }
     @Override
     public AdmissionVo getAdminssionByCourseType(Integer courseType) {
+        //        id不存
+        if (CourseType.valueOf(courseType) == null) throw new BaimaException(201, "课程类型不存在");
         AdmissionVo admissionVo = baseMapper.getByCourseType(courseType);
-        if (admissionVo==null){
-            throw new BaimaException(201,"没有这个招生计划");
-        }
+
         return admissionVo;
     }
 
 //    保存招生计划，同时保存到文章中，二者id相同
     @Override
     public void saveAdmission(AdmissionVo vo) {
+        //        id不存在
+        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, vo.getId())) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, vo.getAuthorId()))
+            throw new BaimaException(201, "id对应的数据不存在");
         AdmissionPlan admissionPlan = new AdmissionPlan();
         BeanUtils.copyProperties(vo, admissionPlan);
         save(admissionPlan);
@@ -81,22 +87,28 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
 
     @Override
     public AdmissionVo getAdminssionById(String id) {
-        AdmissionVo admissionVo = baseMapper.getByid(id);
-        if (admissionVo==null){
-            throw new BaimaException(201,"没有这个招生计划");
-        }
-        return admissionVo;
+        //        id不存在
+        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, id)) throw new BaimaException(201, "id对应的数据不存在");
+        return baseMapper.getByid(id);
     }
 
     @Override
     public void updateByAdmissionId(AdmissionVo admissionPlanVo) {
+        //        id不存在
+        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, admissionPlanVo.getId()))
+            throw new BaimaException(201, "id对应的数据不存在");
         AdmissionPlan vo = getById(admissionPlanVo.getId());
         AdmissionPlan admissionPlan1 = new AdmissionPlan();
         BeanUtils.copyProperties(vo, admissionPlan1);
         Article article = new Article();
         BeanUtils.copyProperties(vo, admissionPlan1);
         BeanUtils.copyProperties(admissionPlanVo, article);
-        article.setAcId("1");
+//        todo 这里的类别id写死，以后修改
+        QueryWrapper<ArticleCategory> wrapper = new QueryWrapper<>();
+//        wrapper.
+
+//        article.setAcId("1");
+
         article.setPublicTime(new Date());
         articleService.updateById(article);
         updateById(admissionPlan1);

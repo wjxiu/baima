@@ -35,7 +35,6 @@ public class AdmissionPlanController {
     @ApiOperation("根据id查询招生计划")
     @GetMapping("{id}")
     public R getById(@ApiParam("招生计划id") @PathVariable String id) {
-        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, id)) throw new BaimaException(201, "查无此数据");
         AdmissionVo byId = admissionPlanService.getAdminssionById(id);
         return R.ok().data("admission", byId);
     }
@@ -43,6 +42,8 @@ public class AdmissionPlanController {
     @ApiOperation("根据id删除招生计划")
     @DeleteMapping("{id}")
     public R deleteById(@ApiParam("招生计划id") @PathVariable String id) {
+//        id不存在
+        if (CheckDBUtil.checkIdEqual(AdmissionPlan.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         admissionPlanService.removeById(id);
         articleService.removeById(id);
         return R.ok();
@@ -58,6 +59,9 @@ public class AdmissionPlanController {
     @ApiOperation(value = "根据id修改招生计划", notes = "招生计划实体类必须有id")
     @PutMapping("")
     public R updateAdmission(@ApiParam(value = "招生计划实体类") @RequestBody AdmissionVo admissionPlanVo) {
+        //        id不存在
+        if (CheckDBUtil.checkIdEqual(AdmissionPlan.class, admissionPlanVo.getId()))
+            throw new BaimaException(201, "id对应的数据不存在");
         admissionPlanService.updateByAdmissionId(admissionPlanVo);
         return R.ok();
     }

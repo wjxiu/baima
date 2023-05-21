@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CourseService extends IService<Course> {
 
     Boolean isFull(String courseId);
+
+    Boolean deleteById(String id);
 }

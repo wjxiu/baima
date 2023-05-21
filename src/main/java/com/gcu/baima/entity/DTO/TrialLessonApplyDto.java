@@ -14,7 +14,6 @@ import lombok.Data;
  */
 @Data
 public class TrialLessonApplyDto {
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String userId;
     private Integer age;
 
@@ -41,7 +40,7 @@ public class TrialLessonApplyDto {
 
     @ApiModelProperty(value = "自己的简介")
     private String profile;
-    private String trialLessonId;
+    private String courseId;
     //    申请试课时间段枚举类
     private Integer priod;
 }

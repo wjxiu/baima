@@ -17,19 +17,21 @@
         select
         <include refid="selectCommon"></include>
         from trial_lesson tl
-        left join course on tl.course_id = course.id
+        join course on tl.id = course.id
         where tl.id = #{id}
     </select>
     <select id="pageTrialLesson" resultType="com.gcu.baima.entity.VO.TrialLessonVo">
         select
         <include refid="selectCommon"></include>
+        ,tlcust.period
         from trial_lesson tl
+        left join trial_lesson_customer tlcust on tl.id = tlcust.trail_lession_id
         left join course on tl.course_id = course.id
     </select>
     <select id="getTrialByUserId" resultType="com.gcu.baima.entity.VO.TrialLessonVo">
         select
-        <include refid="selectCommon"></include>,
-        tlcust.period
+        <include refid="selectCommon"></include>
+        ,tlcust.period
         from trial_lesson tl
         left join trial_lesson_customer tlcust on tl.id = tlcust.trail_lession_id
         left join course on tl.course_id = course.id

@@ -4,10 +4,13 @@ package com.gcu.baima.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gcu.baima.entity.Course;
 import com.gcu.baima.entity.Customer;
 import com.gcu.baima.entity.VO.CustomerVo;
+import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.service.Back.CustomerService;
 
+import com.gcu.baima.utils.CheckDBUtil;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +39,8 @@ public class CustomerController {
     @ApiOperation("根据用户id获取用户信息")
     @GetMapping("{id}")
     public R getById(@PathVariable String id) {
+        //        id不存在
+        if (CheckDBUtil.checkIdEqual(Customer.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         Customer customer = customerService.getById(id);
         CustomerVo customervo = BeanUtil.copyProperties(customer, CustomerVo.class);
         return R.ok().data("customer", customervo);
@@ -44,6 +49,8 @@ public class CustomerController {
     @ApiOperation("更新信息")
     @PutMapping("")
     public R updateCustom(@ApiParam("修改后的用户信息，用户id不能为空") @RequestBody Customer customer) {
+        //        id不存在
+        if (CheckDBUtil.checkIdEqual(Customer.class, customer.getId())) throw new BaimaException(201, "id对应的数据不存在");
         customerService.updateById(customer);
         return R.ok();
     }

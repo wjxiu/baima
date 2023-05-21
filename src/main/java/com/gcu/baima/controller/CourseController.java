@@ -13,6 +13,7 @@ import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.service.Back.ArticleService;
 import com.gcu.baima.service.Back.CourseService;
 import com.gcu.baima.service.Back.TrialLessonService;
+import com.gcu.baima.utils.CheckDBUtil;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,24 +63,26 @@ public class CourseController {
     @ApiOperation("根据课程id修改课程")
     @PutMapping("")
     public R updateCourse(@ApiParam("课程实体类") @RequestBody Course course) {
+        //        id不存在
+        if (CheckDBUtil.checkIdEqual(Course.class, course.getId())) throw new BaimaException(201, "id对应的数据不存在");
         courseService.updateById(course);
         return R.ok();
     }
 
-    @ApiOperation("根据课程id删除课程")
+    @ApiOperation(value = "根据课程id删除课程", notes = "同时删除试听课程及其相关的评论和报名")
     @DeleteMapping("{id}")
     public R deleteById(@ApiParam("课程id") @PathVariable String id) {
-        courseService.removeById(id);
-        return R.ok();
+        Boolean b = courseService.deleteById(id);
+        if (b) return R.ok();
+        return R.error();
     }
 
     @ApiOperation("根据课程id获取课程")
     @GetMapping("{id}")
     public R getById(@ApiParam("课程id") @PathVariable String id) {
+        //        id不存在
+        if (CheckDBUtil.checkIdEqual(Course.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         Course course = courseService.getById(id);
-        if (course == null) {
-            throw new BaimaException(201, "没有这条数据");
-        }
         return R.ok().data("course", course);
     }
 //todo 分页参数查询未知

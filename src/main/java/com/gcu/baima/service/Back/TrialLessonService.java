@@ -32,4 +32,6 @@ public interface TrialLessonService extends IService<TrialLesson> {
 
 
     List<TrialLessonVo> getTrialByUserId(String userId);
+
+    Boolean isApply(String userId, String courseId);
 }

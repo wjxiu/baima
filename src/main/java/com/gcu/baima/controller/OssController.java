@@ -1,5 +1,6 @@
 package com.gcu.baima.controller;
 
+import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.service.Back.OssService;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
@@ -28,6 +29,7 @@ public class OssController {
     @ApiOperation(value = "上传图片", notes = "返回图片地址")
     @PostMapping()
     public R uploadOssFile(@RequestParam("file") MultipartFile multipartFile) {
+        if (multipartFile.isEmpty()) throw new BaimaException(201, "文件为空");
         String url = ossService.uploadFile(multipartFile);
         return R.ok().data("url", url);
     }

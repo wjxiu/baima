@@ -3,6 +3,7 @@ package com.gcu.baima.service.Back.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gcu.baima.entity.Course;
 import com.gcu.baima.entity.Customer;
 import com.gcu.baima.entity.DTO.TrialLessonApplyDto;
 import com.gcu.baima.entity.TrialLesson;
@@ -15,6 +16,7 @@ import com.gcu.baima.service.Back.CustomerService;
 import com.gcu.baima.service.Back.TrialLessonCustomerService;
 import com.gcu.baima.service.Back.TrialLessonService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gcu.baima.utils.CheckDBUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -42,26 +44,14 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
     @Autowired
     CourseService courseService;
 
-    //随机分配给某一个试听课程
     @Override
     public void apply(TrialLessonApplyDto trialLessonApplyDto) {
-
         String userId = trialLessonApplyDto.getUserId();
-        String trialLessonId = trialLessonApplyDto.getTrialLessonId();
-        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(trialLessonApplyDto.getTrialLessonId())) {
-            throw new BaimaException(201, "缺少必要参数");
-        }
+        String trialLessonId = trialLessonApplyDto.getCourseId();
+        //        判断用户是否试听过
+        if (isApply(userId, trialLessonId)) throw new BaimaException(201, "已经申请过");
         Customer customer = BeanUtil.copyProperties(trialLessonApplyDto, Customer.class);
         customer.setId(trialLessonApplyDto.getUserId());
-        TrialLesson byId = trialLessonService.getById(trialLessonId);
-        if (byId == null) throw new BaimaException(201, "没有这门试听课程");
-        //        判断用户是否试听过
-        QueryWrapper<TrialLessonCustomer> wrapper = new QueryWrapper<TrialLessonCustomer>().eq("customer_id", userId)
-                .eq("trail_lession_id", trialLessonId);
-        TrialLessonCustomer one = trialLessonCustomerService.getOne(wrapper);
-        if (one != null) {
-            throw new BaimaException(201, "已经试听过该课程,不能重复试听");
-        }
         customerService.updateById(customer);
 //        更新试听课程人数，但是最大人数不做限制
         TrialLesson lesson = getById(trialLessonId);
@@ -75,28 +65,25 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
     }
 
     @Override
-    public void withdraw(String customerId, String trialLessionId) {
-        //        判断用户是否试听过
-        QueryWrapper<TrialLessonCustomer> wrapper = new QueryWrapper<TrialLessonCustomer>().eq("customer_id", customerId)
-                .eq("trail_lession_id", trialLessionId);
-        TrialLessonCustomer one = trialLessonCustomerService.getOne(wrapper);
-        if (one == null) {
-            throw new BaimaException(201, "没有申请该课程，撤回失败");
-        }
+    public void withdraw(String customerId, String courseId) {
+        Boolean apply = isApply(customerId, courseId);
+        if (!apply) throw new BaimaException(201, "用户没有申请过试听课程");
         //        更新试听课程人数，但是最大人数不做限制
-        TrialLesson lesson = getById(one.getTrailLessionId());
+        TrialLesson lesson = getById(courseId);
         lesson.setCurrCustomerNum(lesson.getCurrCustomerNum() - 1);
         updateById(lesson);
-        trialLessonCustomerService.removeById(one.getId());
+        trialLessonCustomerService.removeById(courseId);
     }
 
     @Override
     public TrialLessonVo getTrialById(String id) {
+        if (!CheckDBUtil.checkIdEqual(TrialLesson.class, id)) throw new BaimaException(201, "id对应数据不存在");
         return baseMapper.getTrialById(id);
     }
 
     @Override
     public void deleteTrialLessonById(String id) {
+        if (!CheckDBUtil.checkIdEqual(TrialLesson.class, id)) throw new BaimaException(201, "id对应数据不存在");
         baseMapper.deleteTrialLessonById(id);
     }
 
@@ -107,8 +94,20 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
 
     @Override
     public List<TrialLessonVo> getTrialByUserId(String userId) {
+        if (!CheckDBUtil.checkIdEqual(Customer.class, userId)) throw new BaimaException(201, "id对应数据为空");
         List<TrialLessonVo> t = baseMapper.getTrialByUserId(userId);
         return t;
+    }
+
+    @Override
+    public Boolean isApply(String userId, String courseId) {
+        if (!CheckDBUtil.checkIdEqual(Customer.class, userId)) throw new BaimaException(201, "id对应数据为空");
+        if (!CheckDBUtil.checkIdEqual(Course.class, courseId)) throw new BaimaException(201, "id对应数据为空");
+        //        判断用户是否申请试听课程
+        QueryWrapper<TrialLessonCustomer> wrapper = new QueryWrapper<TrialLessonCustomer>().eq("customer_id", userId)
+                .eq("trail_lession_id", courseId);
+        TrialLessonCustomer one = trialLessonCustomerService.getOne(wrapper);
+        return one != null;
     }
 
 

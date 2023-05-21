@@ -25,6 +25,7 @@ public class StatController {
     @Resource
     TrailStatMapper trailStatMapper;
 
+    @ApiOperation(" 具体课程试听人数")
     @GetMapping("/getTrialCount")
     public Object getTrialCount() {
         List<Map<String, Object>> map = trailStatMapper.getCourseRegitCount();
