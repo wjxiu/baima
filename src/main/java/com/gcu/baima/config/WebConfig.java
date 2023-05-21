@@ -13,16 +13,16 @@ import java.util.List;
  * @author xiu
  * @create 2023-05-13 11:50
  */
-//@Configuration
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     //    @Resource
     private LoginUserHandlerMethodArgumentResolver loginUserHandlerMethodArgumentResolver;
 
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(loginUserHandlerMethodArgumentResolver);
-    }
+//    @Override
+//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+//        argumentResolvers.add(loginUserHandlerMethodArgumentResolver);
+//    }
 
     @Bean
     public ServerEndpointExporter serverEndpointExporter() {
