@@ -46,7 +46,8 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
         if (!CheckDBUtil.checkIdEqual(Customer.class, userId) || !CheckDBUtil.checkIdEqual(Course.class, courseId))
             throw new BaimaException(201, "id对应数据不存在");
         QueryWrapper<Registration> wrapper = new QueryWrapper<>();
-        wrapper.eq("customer_id", userId).eq("perfer_course_id", courseId).eq("enroll_status", 0);
+//        没有报过或者报名失败能报，其他都不能报名
+        wrapper.eq("customer_id", userId).eq("perfer_course_id", courseId).ne("enroll_status", EnrollStatus.失败.value());
         int count = count(wrapper);
         if (count > 0) throw new BaimaException(201, "你已报名了该课程");
 //        if (courseService.isFull(courseId)) throw new BaimaException(201, "课程已满，等待下次开课");
@@ -77,7 +78,7 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     @Override
     public void addRegistration(RegistrationDto registrationVo) {
         boolean b = customerService.updateById(registrationVo.getCustomer());
-//        check(registrationVo.getCustomer().getId(), registrationVo.getCourseId());
+        check(registrationVo.getCustomer().getId(), registrationVo.getCourseId());
         Registration registration = new Registration();
         registration.setCustomerId(registrationVo.getCustomer().getId());
         registration.setPerferCourseId(registrationVo.getCourseId());

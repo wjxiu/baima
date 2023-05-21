@@ -28,6 +28,7 @@ public class AdmissionVo {
     private Integer year;
     private String authorId;
     private String content;
+    private ArticleVo articleVo;
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
     @TableField(fill = FieldFill.INSERT_UPDATE)

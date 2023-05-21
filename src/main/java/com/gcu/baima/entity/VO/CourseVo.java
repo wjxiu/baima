@@ -23,8 +23,6 @@ public class CourseVo {
     private Integer maxNum;
     private CourseType CourseType;
     private Date startTime;
-    private ArticleVo articleVo;
-
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
     @TableField(fill = FieldFill.INSERT_UPDATE)
