@@ -64,7 +64,7 @@ public class CourseController {
     @PutMapping("")
     public R updateCourse(@ApiParam("课程实体类") @RequestBody Course course) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Course.class, course.getId())) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Course.class, course.getId())) throw new BaimaException(201, "id对应的数据不存在");
         courseService.updateById(course);
         return R.ok();
     }
@@ -72,6 +72,7 @@ public class CourseController {
     @ApiOperation(value = "根据课程id删除课程", notes = "同时删除试听课程及其相关的评论和报名")
     @DeleteMapping("{id}")
     public R deleteById(@ApiParam("课程id") @PathVariable String id) {
+        if (!CheckDBUtil.checkIdEqual(Course.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         Boolean b = courseService.deleteById(id);
         if (b) return R.ok();
         return R.error();
@@ -81,7 +82,7 @@ public class CourseController {
     @GetMapping("{id}")
     public R getById(@ApiParam("课程id") @PathVariable String id) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Course.class, id)) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Course.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         Course course = courseService.getById(id);
         return R.ok().data("course", course);
     }

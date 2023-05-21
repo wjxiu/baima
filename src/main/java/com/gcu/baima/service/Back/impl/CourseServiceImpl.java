@@ -26,6 +26,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Override
     public Boolean isFull(String courseId) {
+        if (!CheckDBUtil.checkIdEqual(Course.class, courseId)) throw new BaimaException(201, "id对应的数据不存在");
         Course course = getById(courseId);
         return course.getCurrentNum() > (course.getMaxClassCount() * course.getMaxClassNum());
     }
@@ -33,7 +34,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public Boolean deleteById(String id) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Course.class, id)) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Course.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         boolean b = removeById(id);
         trialLessonService.deleteTrialLessonById(id);
         return b;

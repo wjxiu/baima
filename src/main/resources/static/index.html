@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户</title>
+</head>
+<body>
+
+<input type="text" id="message" placeholder="消息内容"/>
+<!--<input type="text" id="acceptId" placeholder="好友id"/>-->
+
+<button onclick="send()">发送</button>
+<button onclick="cleanALl()">清空</button>
+<button onclick="closeWebsocket()">关闭链接</button>
+<div id="infoData" style="background-color: #d8aaaa;
+
+    margin-top: 5%;">
+</div>
+<p id="userHeader"></p>
+<script>
+    var uid = Date.now();
+    var websocket = null;
+    //判断当前浏览器是否支持WebSocket
+    websocket = new WebSocket("ws://127.0.0.1:8081/api/websocket/0/" + uid);
+    let model = {
+        message: "", //消息
+        fromType: "USER", //识别参数
+        fromId: "",
+        acceptType: "EMPTY", //冗余字段
+    }
+    websocket.onopen = function (event) {
+        // model.fromId=uid+""
+        model = JSON.parse(event.data)
+    }
+
+    function send() {
+        var message = document.getElementById("message").value;
+        model.message = message
+        websocket.send(JSON.stringify(model));
+
+    }
+
+    window.onbeforeunload = function () {
+        closeWebsocket()
+    }
+    websocket.onmessage = function (event) {
+        console.log(event);
+        model.fromId = JSON.parse(event.data).fromId
+        var html = document.getElementById("infoData").innerHTML;
+        document.getElementById("infoData").innerHTML = html + "接受到消息：" + event.data + "</br>";
+    }
+
+    function closeWebsocket() {
+        websocket.close()
+    }
+
+    function cleanAll() {
+        document.getElementById("infoData").innerHTML = ""
+    }
+</script>
+</body>
+</html>

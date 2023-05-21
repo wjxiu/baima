@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.Enum.EnrollStatus;
 import com.gcu.baima.entity.Course;
+import com.gcu.baima.entity.Customer;
+import com.gcu.baima.entity.Manager;
 import com.gcu.baima.entity.Registration;
 import com.gcu.baima.entity.DTO.RegistrationDto;
 import com.gcu.baima.entity.VO.RegistrationVo;
@@ -14,6 +16,7 @@ import com.gcu.baima.service.Back.CustomerService;
 import com.gcu.baima.service.Back.ManagerService;
 import com.gcu.baima.service.Back.RegistrationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gcu.baima.utils.CheckDBUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -40,25 +43,22 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     //检查用户是否能报名课程
     @Override
     public Boolean check(String userId, String courseId) {
-        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(courseId)) throw new BaimaException(201, "缺少必要参数");
+        if (!CheckDBUtil.checkIdEqual(Customer.class, userId) || !CheckDBUtil.checkIdEqual(Course.class, courseId))
+            throw new BaimaException(201, "id对应数据不存在");
         QueryWrapper<Registration> wrapper = new QueryWrapper<>();
         wrapper.eq("customer_id", userId).eq("perfer_course_id", courseId).eq("enroll_status", 0);
         int count = count(wrapper);
-        if (customerService.getById(userId) == null) throw new BaimaException(201, "用户为空");
-        if (courseService.getById(courseId) == null) throw new BaimaException(201, "没有该门课程");
         if (count > 0) throw new BaimaException(201, "你已报名了该课程");
-        Boolean full = courseService.isFull(courseId);
-        if (full) throw new BaimaException(201, "课程已满，等待下次开课");
-
+//        if (courseService.isFull(courseId)) throw new BaimaException(201, "课程已满，等待下次开课");
         return true;
     }
 
     @Override
     public void agree(String userId, String courseId, String managerId) {
-        if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(courseId) || StringUtils.isEmpty(managerId))
-            throw new BaimaException(201, "缺少必要参数");
-        if (customerService.getById(userId) == null || courseService.getById(courseId) == null || managerService.getById(managerId) == null)
-            throw new BaimaException(201, "无用户或课程或管理员");
+        if (!CheckDBUtil.checkIdEqual(Customer.class, userId) || !CheckDBUtil.checkIdEqual(Course.class, courseId))
+            throw new BaimaException(201, "id对应数据不存在");
+//
+//        if (courseService.isFull(courseId)) throw new BaimaException(201, "课程已满，等待下次开课");
         Registration registration = new Registration();
         registration.setCustomerId(userId);
         registration.setPerferCourseId(courseId);
@@ -66,12 +66,9 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
         registration.setManagerId(managerId);
         QueryWrapper<Registration> wrapper = new QueryWrapper<Registration>().
                 eq("customer_id", userId).eq("perfer_course_id", courseId);
-//                .eq("enroll_status", EnrollStatus.审核中.value());
         boolean update = update(registration, wrapper);
         //        报名人数+1
-        if (!update) {
-            throw new BaimaException(201, "用户没有报名课程或已经同意");
-        }
+        if (!update) throw new BaimaException(201, "用户没有报名课程或已经同意");
         Course course = courseService.getById(courseId);
         course.setCurrentNum(course.getCurrentNum() + 1);
         courseService.updateById(course);
@@ -80,7 +77,7 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     @Override
     public void addRegistration(RegistrationDto registrationVo) {
         boolean b = customerService.updateById(registrationVo.getCustomer());
-        check(registrationVo.getCustomer().getId(), registrationVo.getCourseId());
+//        check(registrationVo.getCustomer().getId(), registrationVo.getCourseId());
         Registration registration = new Registration();
         registration.setCustomerId(registrationVo.getCustomer().getId());
         registration.setPerferCourseId(registrationVo.getCourseId());
@@ -94,27 +91,23 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
 
     @Override
     public void deny(String userId, String courseId, String managerId) {
-        if (customerService.getById(userId) == null) throw new BaimaException(201, "用户不存在");
-        if (courseService.getById(courseId) == null) throw new BaimaException(201, "课程不存在");
-        if (managerService.getById(managerId) == null) throw new BaimaException(201, "管理员不存在");
+        if (!CheckDBUtil.checkIdEqual(Customer.class, userId) || !CheckDBUtil.checkIdEqual(Course.class, courseId) || !CheckDBUtil.checkIdEqual(Manager.class, managerId))
+            throw new BaimaException(201, "id对应数据不存在");
         Registration registration = new Registration();
         registration.setCustomerId(userId);
         registration.setPerferCourseId(courseId);
         registration.setEnrollStatus(EnrollStatus.失败.value());
         registration.setManagerId(managerId);
-
         QueryWrapper<Registration> wrapper = new QueryWrapper<Registration>().
                 eq("customer_id", userId).
                 eq("perfer_course_id", courseId);
         boolean update = update(registration, wrapper);
 //        boolean remove = remove(wrapper);
-        //        报名人数-1
+        //        报名人数-1，为了用户能够看到自己失败的信息
         Course course = courseService.getById(courseId);
         course.setCurrentNum(course.getCurrentNum() - 1);
         courseService.updateById(course);
-        if (!update) {
-            throw new BaimaException(201, "拒绝失败");
-        }
+        if (!update) throw new BaimaException(201, "拒绝失败");
     }
 
     @Override
@@ -124,9 +117,7 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
 
     @Override
     public List<RegistrationVo> getUserRegistList(String userId) {
-        if (customerService.getById(userId) == null) {
-            throw new BaimaException(201, "用户不存在");
-        }
+        if (!CheckDBUtil.checkIdEqual(Customer.class, userId)) throw new BaimaException(201, "id对应数据不存在");
         List<RegistrationVo> l = baseMapper.getUserRegistList(userId);
         return l;
     }

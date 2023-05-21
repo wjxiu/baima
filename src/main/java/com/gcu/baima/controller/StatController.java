@@ -57,7 +57,6 @@ public class StatController {
             Integer type = (Integer) stringObjectMap.get("type");
             CourseType courseType = CourseType.valueOf(type);
             stringObjectMap.put("type", courseType.toString());
-//            stringObjectMap.put("type",courseType.getValue().toString());
         }
         return applyRate;
     }

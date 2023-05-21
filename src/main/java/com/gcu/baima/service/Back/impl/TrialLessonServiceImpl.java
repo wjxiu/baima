@@ -72,7 +72,9 @@ public class TrialLessonServiceImpl extends ServiceImpl<TrialLessonMapper, Trial
         TrialLesson lesson = getById(courseId);
         lesson.setCurrCustomerNum(lesson.getCurrCustomerNum() - 1);
         updateById(lesson);
-        trialLessonCustomerService.removeById(courseId);
+        QueryWrapper<TrialLessonCustomer> trialLessonQueryWrapper = new QueryWrapper<>();
+        trialLessonQueryWrapper.eq("trail_lession_id", courseId).eq("customer_id", courseId);
+        trialLessonCustomerService.remove(trialLessonQueryWrapper);
     }
 
     @Override

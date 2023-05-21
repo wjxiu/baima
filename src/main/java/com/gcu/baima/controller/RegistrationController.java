@@ -37,31 +37,30 @@ public class RegistrationController {
     @Autowired
     RegistrationService registrationService;
 
-    //    提交报名课程,同时更新用户信息,课程的报名人数也加1
-    @ApiOperation("提交报名课程,同时更新用户信息")
+    //    提交报名课程,同时更新用户信息，报名人数等到同意后才加1
+    @ApiOperation(value = "提交报名课程,同时更新用户信息", notes = "审核人员同意后，报名人数才加1，不检查人数上限")
     @PostMapping("enroll")
     public R enroll(@ApiParam("报名信息，用户信息和课程id") @RequestBody RegistrationDto registrationVo) {
-        log.info("{}", registrationVo);
         registrationService.addRegistration(registrationVo);
         return R.ok();
     }
 
     //判断用户能否报名某门课程
-    @ApiOperation("判断用户能否报名某门课程")
+    @ApiOperation(value = "判断用户能否报名某门课程", notes = "不检查人数上限")
     @GetMapping("check")
     public R isRegistration(String userId, String courseId) {
         registrationService.check(userId, courseId);
         return R.ok().data("check", 1);
     }
 
-    @ApiOperation(value = "同意用户的报名", notes = "测试传managerId,上线时不用传，从token中获取")
+    @ApiOperation(value = "同意用户的报名", notes = "报名人数+1，不检查人数上限")
     @GetMapping("agree")
     public R agree(String userId, String courseId, String managerId) {
         registrationService.agree(userId, courseId, managerId);
         return R.ok();
     }
 
-    @ApiOperation(value = "拒绝用户的报名", notes = "没有删除报名信息")
+    @ApiOperation(value = "拒绝用户的报名", notes = "没有删除报名信息，报名人数-1，不检查人数上限")
     @DeleteMapping("deny")
     public R deny(String userId, String courseId, String managerId) {
         registrationService.deny(userId, courseId, managerId);
@@ -69,7 +68,7 @@ public class RegistrationController {
     }
 
 
-    @ApiOperation(value = "分页参数", notes = "条件未确定未完成，需要返回vo,不是返回id")
+    @ApiOperation(value = "分页参数", notes = "条件未确定")
     @PostMapping("page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit,
                   @ApiParam(required = false) @RequestBody(required = false) Registration map

@@ -37,7 +37,7 @@ public class ManagerController {
     @GetMapping("{id}")
     public R getById(@ApiParam("工作人员id") @PathVariable String id) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Manager.class, id)) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Manager.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         Manager manager = managerService.getById(id);
         ManagerVo managerVo = BeanUtil.copyProperties(manager, ManagerVo.class);
         return R.ok().data("manager", managerVo);
@@ -47,7 +47,7 @@ public class ManagerController {
     @PutMapping("")
     public R updateCustom(@ApiParam("修改后的工作人员信息，用工作人员id不能为空") @RequestBody Manager manager) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Manager.class, manager.getId())) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Manager.class, manager.getId())) throw new BaimaException(201, "id对应的数据不存在");
         managerService.updateById(manager);
         return R.ok();
     }
@@ -56,7 +56,7 @@ public class ManagerController {
     @DeleteMapping("/{id}")
     public R deleteById(@ApiParam("工作人员") @PathVariable String id) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Manager.class, id)) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Manager.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         managerService.removeById(id);
         return R.ok();
     }

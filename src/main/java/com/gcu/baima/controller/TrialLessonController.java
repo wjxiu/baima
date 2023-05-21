@@ -79,7 +79,5 @@ public class TrialLessonController {
         trialLessonService.updateById(trialLesson);
         return R.ok();
     }
-
-
 }
 

@@ -40,7 +40,7 @@ public class CustomerController {
     @GetMapping("{id}")
     public R getById(@PathVariable String id) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Customer.class, id)) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Customer.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         Customer customer = customerService.getById(id);
         CustomerVo customervo = BeanUtil.copyProperties(customer, CustomerVo.class);
         return R.ok().data("customer", customervo);
@@ -50,7 +50,7 @@ public class CustomerController {
     @PutMapping("")
     public R updateCustom(@ApiParam("修改后的用户信息，用户id不能为空") @RequestBody Customer customer) {
         //        id不存在
-        if (CheckDBUtil.checkIdEqual(Customer.class, customer.getId())) throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Customer.class, customer.getId())) throw new BaimaException(201, "id对应的数据不存在");
         customerService.updateById(customer);
         return R.ok();
     }
@@ -58,6 +58,7 @@ public class CustomerController {
     @ApiOperation("根据用户id删除用户")
     @DeleteMapping("/{id}")
     public R deleteById(@PathVariable String id) {
+        if (!CheckDBUtil.checkIdEqual(Customer.class, id)) throw new BaimaException(201, "id对应的数据不存在");
         customerService.removeById(id);
         return R.ok();
     }

@@ -6,7 +6,6 @@
                ap.name,
                ap.info,
                ap.course_type   as courseType,
-               ap.charge,
                ap.duration,
                ap.year,
                article.id       as authorId,

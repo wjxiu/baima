@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客服</title>
+    <!--    这是客服页面-->
+</head>
+<body>
+<input type="text" id="message" placeholder="消息内容"/>
+<input type="text" id="toId" placeholder="好友id"/>
+
+<button onclick="send()">发送</button>
+<button onclick="cleanAll()">清空</button>
+<button onclick="closeWebsocket()">关闭链接</button>
+
+<div id="infoData" style="background-color: #d8aaaa;
+
+    margin-top: 5%;">
+</div>
+<script>
+    var uid = Date.now();
+    var websocket = null;
+    let model = {
+        message: "", //消息
+        fromType: "KF", //识别参数
+        toId: "",
+        fromId: uid,
+        acceptType: "EMPTY", //冗余字段
+    }
+    //判断当前浏览器是否支持WebSocket
+    websocket = new WebSocket("ws://127.0.0.1:8081/api/websocket/1/" + uid);
+    websocket.onopen = function (event) {
+        model = JSON.parse(event.data)
+        // model.message=event.data.message
+    }
+    window.onbeforeunload = function () {
+        closeWebsocket()
+    }
+    websocket.onmessage = function (event) {
+        console.log(event.data);
+        model = JSON.parse(event.data)
+        var html = document.getElementById("infoData").innerHTML;
+        document.getElementById("infoData").innerHTML = html + "接受到消息：" + event.data + "</br>";
+    }
+
+    //todo修改为服务器端代码
+    function send() {
+        model.fromType = "KF"
+        model.fromId
+        model.toId = document.getElementById("toId").value;
+        console.log('这是客服发送的toid')
+        model.message = document.getElementById("message").value
+        console.log(model)
+        websocket.send(JSON.stringify(model));
+    }
+
+    function closeWebsocket() {
+        websocket.close()
+    }
+
+    function cleanAll() {
+        document.getElementById("infoData").innerHTML = ""
+    }
+</script>
+</body>
+</html>
