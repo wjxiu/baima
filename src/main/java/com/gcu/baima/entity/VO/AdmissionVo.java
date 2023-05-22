@@ -21,14 +21,10 @@ public class AdmissionVo {
     private String id;
     private String name;
     private String info;
-    private String title;
     private Integer courseType;
-    private BigDecimal charge;
     private Integer duration;
     private Integer year;
-    private String authorId;
-    private String content;
-    private ArticleVo articleVo;
+    private ArticleVo article;
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
     @TableField(fill = FieldFill.INSERT_UPDATE)

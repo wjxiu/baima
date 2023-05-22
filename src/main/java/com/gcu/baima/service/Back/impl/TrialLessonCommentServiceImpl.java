@@ -16,8 +16,6 @@ import com.gcu.baima.utils.CheckDBUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-
 /**
  * <p>
  * 服务实现类
@@ -36,9 +34,9 @@ public class TrialLessonCommentServiceImpl extends ServiceImpl<TrialLessonCommen
     TrialLessonCustomerService trialLessonCustomerService;
 
     @Override
-    public IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, HashMap<String, String> map) {
+    public IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, TrialLesson trialLesson) {
         Page<TrialLessonCommentVo> voPage = new Page<>(pageNo, limit);
-        baseMapper.queryPage(voPage, map);
+        baseMapper.queryPage(voPage, trialLesson);
         return voPage;
     }
 

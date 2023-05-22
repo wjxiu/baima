@@ -50,7 +50,10 @@ public class AdmissionPlan implements Serializable {
     private Integer duration;
 
     @ApiModelProperty(value = "所属年份，YYYY")
-    private Integer year=new Date().getYear();
+    private Integer year = new Date().getYear();
+
+    @ApiModelProperty(value = "关联课程id")
+    private String courseId;
 
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;

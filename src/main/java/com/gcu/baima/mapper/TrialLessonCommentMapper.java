@@ -1,6 +1,7 @@
 package com.gcu.baima.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonComment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
@@ -17,5 +18,5 @@ import java.util.HashMap;
  */
 public interface TrialLessonCommentMapper extends BaseMapper<TrialLessonComment> {
 
-    Page<TrialLessonCommentVo> queryPage(Page<TrialLessonCommentVo> voPage, HashMap<String, String> map);
+    Page<TrialLessonCommentVo> queryPage(Page<TrialLessonCommentVo> voPage, TrialLesson map);
 }

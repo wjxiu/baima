@@ -2,7 +2,7 @@ package com.gcu.baima.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonComment;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
 import com.gcu.baima.exception.BaimaException;
@@ -14,8 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 /**
  * <p>
@@ -45,11 +43,11 @@ public class TrialLessonCommentController {
         return R.ok();
     }
 
-    //    todo 分页参数查询，参数未知
+    //    todo 分页参数查询，根据课程id查
     @PostMapping("/page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit,
-                  @ApiParam() @RequestBody(required = false) HashMap<String, String> map) {
-        IPage<TrialLessonCommentVo> page = commentService.pageComment(pageNo, limit, map);
+                  @ApiParam() @RequestBody(required = false) TrialLesson trialLesson) {
+        IPage<TrialLessonCommentVo> page = commentService.pageComment(pageNo, limit, trialLesson);
         return R.ok().data("page", page);
     }
 

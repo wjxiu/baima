@@ -1,6 +1,7 @@
 package com.gcu.baima.service.Back;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonComment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
@@ -17,7 +18,7 @@ import java.util.HashMap;
  */
 public interface TrialLessonCommentService extends IService<TrialLessonComment> {
 
-    IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, HashMap<String, String> map);
+    IPage<TrialLessonCommentVo> pageComment(Long pageNo, Long limit, TrialLesson trialLesson);
 
     Boolean isRate(String courseId, String customerId);
 

@@ -5,12 +5,15 @@
     <select id="getArticleById" resultType="com.gcu.baima.entity.VO.ArticleVo">
         select article.id,
                article.public_time,
-               manager.username as authorname,
+               manager.username     as authorname,
                article.view,
                article.title,
                article.content,
-               ac.name          as categoryName,
-               article.ac_id    as categoryId
+               ac.name              as categoryName,
+               article.ac_id        as categoryId,
+               article.gmt_modified as gmtModified,
+               article.gmt_create   as gmtCreate
+
         from article
                  left join article_category as ac
                            on article.ac_id = ac.id

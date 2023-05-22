@@ -27,13 +27,11 @@ public class ArticleVo {
 
     @ApiModelProperty(value = "作者名字")
     private String authorname;
-
-
     @ApiModelProperty(value = "内容，存储富文本")
     private String content;
-
-    @ApiModelProperty(value = "分类名")
-    private String categoryName;
+//先去掉分类名称
+//    @ApiModelProperty(value = "分类名")
+//    private String categoryName;
 
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;

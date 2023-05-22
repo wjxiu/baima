@@ -58,7 +58,6 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
     public void agree(String userId, String courseId, String managerId) {
         if (!CheckDBUtil.checkIdEqual(Customer.class, userId) || !CheckDBUtil.checkIdEqual(Course.class, courseId))
             throw new BaimaException(201, "id对应数据不存在");
-//
 //        if (courseService.isFull(courseId)) throw new BaimaException(201, "课程已满，等待下次开课");
         Registration registration = new Registration();
         registration.setCustomerId(userId);

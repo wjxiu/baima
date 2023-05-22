@@ -1,8 +1,10 @@
 package com.gcu.baima.service.Back;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.AdmissionPlan;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gcu.baima.entity.DTO.AdmissionPlanSaveDTO;
 import com.gcu.baima.entity.VO.AdmissionVo;
 
 /**
@@ -16,17 +18,21 @@ import com.gcu.baima.entity.VO.AdmissionVo;
 public interface AdmissionPlanService extends IService<AdmissionPlan> {
     /**
      * 分页查询招生计划
-     * @param page 页码
-     * @param limit 页大小
+     *
+     * @param page    页码
+     * @param limit   页大小
      * @param queryVo 查询条件vo 现在没确定
      * @return
      */
-    IPage<AdmissionPlan> pageAdminssion(Long page, Long limit, AdmissionPlan queryVo);
+    Page<AdmissionVo> pageAdminssion(Long page, Long limit, AdmissionPlan queryVo);
+
     AdmissionVo getAdminssionByCourseType(Integer courseType);
 
-    void saveAdmission(AdmissionVo vo);
+    void saveAdmission(AdmissionPlanSaveDTO vo);
 
     AdmissionVo getAdminssionById(String id);
 
     void updateByAdmissionId(AdmissionVo admissionPlanVo);
+
+    AdmissionVo getByCourseId(String courseId);
 }

@@ -38,6 +38,10 @@ public class ArticleController {
     @ApiOperation("根据id查询文章,返回文章vo类")
     @GetMapping("{id}")
     public R getById(@PathVariable String id) {
+//        更新阅读量
+        Article byId = articleService.getById(id);
+        byId.setView(byId.getView() + 1);
+        articleService.updateById(byId);
         ArticleVo articleVo = articleService.getArticleById(id);
         return R.ok().data("article", articleVo);
     }
