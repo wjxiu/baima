@@ -43,8 +43,6 @@ import java.util.Date;
 public class ArticleController {
     @Autowired
     ArticleService articleService;
-
-
     //    根据id查询文章,返回文章vo类
     @ApiOperation("根据id查询文章,返回文章vo类")
     @GetMapping("{id}")
@@ -60,6 +58,8 @@ public class ArticleController {
     @ApiOperation("添加文章")
     @PostMapping("")
     public R add(@RequestBody Article article) {
+        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
+            throw new BaimaException(201, "名字重复");
         String id = UUID.randomUUID().toString(true).substring(0, 19);
         article.setId(id);
         article.setPublicTime(new Date());

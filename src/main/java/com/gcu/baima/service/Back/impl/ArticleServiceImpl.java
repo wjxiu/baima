@@ -57,6 +57,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public void updateGuide(Article article) {
+        if (!CheckDBUtil.checkIdEqual(Article.class, article.getId())) throw new BaimaException(201, "id对应数据不存在");
+        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
+            throw new BaimaException(201, "名字重复");
         if (article.getPublicTime() == null) article.setPublicTime(new Date());
         article.setAcId(getGuideAcId());
         updateById(article);
@@ -68,7 +71,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         String id = UUID.randomUUID().toString(true).substring(0, 19);
         article.setId(id);
         article.setAcId(getGuideAcId());
-        article.setPublicTime(new Date());
+        if (article.getPublicTime() == null) article.setPublicTime(new Date());
         save(article);
     }
 
@@ -82,7 +85,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         ArticleVo guide = getGuide();
         Word07Writer writer = new Word07Writer();
-
         try {
             writer.addText(new Font("方正小标宋简体", Font.PLAIN, 22), guide.getTitle());
             writer.addText(new Font("宋体", Font.PLAIN, 10), guide.getContent());
@@ -95,7 +97,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         } finally {
             writer.close();
         }
-
     }
 
     public String getGuideAcId() {
