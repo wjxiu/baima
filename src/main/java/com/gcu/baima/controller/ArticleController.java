@@ -100,7 +100,7 @@ public class ArticleController {
 
     @ApiOperation(value = "更新招生简章", notes = "禁止修改acId")
     @PutMapping("updateGuide")
-    public R updateGuide(Article article) {
+    public R updateGuide(@RequestBody Article article) {
         articleService.updateGuide(article);
         return R.ok();
     }
