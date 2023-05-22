@@ -21,4 +21,21 @@
                            on article.author_id = manager.id
         where article.id = #{id}
     </select>
+    <select id="getGuide" resultType="com.gcu.baima.entity.VO.ArticleVo">
+        select article.id,
+               article.public_time,
+               manager.username     as authorname,
+               article.view,
+               article.title,
+               article.content,
+               '招生计划'               as categoryName,
+               article.ac_id        as categoryId,
+               article.gmt_modified as gmtModified,
+               article.gmt_create   as gmtCreate
+        from article
+                 join manager on article.author_id = manager.id
+        where ac_id = (select id
+                       from article_category
+                       where name = '招生计划')
+    </select>
 </mapper>

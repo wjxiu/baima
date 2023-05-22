@@ -2,19 +2,30 @@ package com.gcu.baima.controller;
 
 
 import cn.hutool.core.lang.UUID;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.baima.entity.AdmissionPlan;
 import com.gcu.baima.entity.Article;
+import com.gcu.baima.entity.ArticleCategory;
 import com.gcu.baima.entity.Customer;
 import com.gcu.baima.entity.VO.ArticleVo;
 import com.gcu.baima.exception.BaimaException;
+import com.gcu.baima.service.Back.ArticleCategoryService;
 import com.gcu.baima.service.Back.ArticleService;
 import com.gcu.baima.utils.CheckDBUtil;
 import com.gcu.baima.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamSource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -76,5 +87,35 @@ public class ArticleController {
         return R.ok();
     }
 //    todo:分页查询待做
+
+    @ApiOperation(value = "添加一个招生简章", notes = "只需要" + "authorId content title")
+    @PostMapping("addGuide")
+    public R addGuide(@RequestBody Article article) {
+
+        articleService.addGuide(article);
+
+        return R.ok();
+    }
+
+    @GetMapping("getGuide")
+    public R getGuide() {
+        ArticleVo articleVo = articleService.getGuide();
+        return R.ok().data("guide", articleVo);
+    }
+
+    @ApiOperation(value = "添加一个招生简章", notes = "禁止修改acId")
+    @PutMapping("updateGuide")
+    public R updateGuide(Article article) {
+        articleService.updateGuide(article);
+        return R.ok();
+    }
+
+    @ApiOperation("下载招生简章")
+    @GetMapping(value = "downloadGuide", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity downloadGuide(HttpServletResponse response) {
+        articleService.downloadGuide(response);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 }
 

@@ -15,4 +15,6 @@ import com.gcu.baima.entity.VO.ArticleVo;
 public interface ArticleMapper extends BaseMapper<Article> {
 
     ArticleVo getArticleById(String id);
+
+    ArticleVo getGuide();
 }
