@@ -58,12 +58,7 @@ public class ArticleController {
     @ApiOperation("添加文章")
     @PostMapping("")
     public R add(@RequestBody Article article) {
-        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
-            throw new BaimaException(201, "名字重复");
-        String id = UUID.randomUUID().toString(true).substring(0, 19);
-        article.setId(id);
-        article.setPublicTime(new Date());
-        articleService.save(article);
+        articleService.add(article);
         return R.ok();
     }
 

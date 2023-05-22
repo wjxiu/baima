@@ -27,4 +27,8 @@ public interface ArticleService extends IService<Article> {
     void addGuide(Article article);
 
     void downloadGuide(HttpServletResponse response);
+
+    void add(Article article);
+
+    public String getGuideAcId();
 }

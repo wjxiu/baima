@@ -99,9 +99,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
     }
 
+    @Override
+    public void add(Article article) {
+        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
+            throw new BaimaException(201, "名字重复");
+        String id = UUID.randomUUID().toString(true).substring(0, 19);
+        article.setId(id);
+        article.setPublicTime(new Date());
+        save(article);
+    }
+
+    @Override
     public String getGuideAcId() {
         QueryWrapper<ArticleCategory> articleQueryWrapper = new QueryWrapper<>();
-        articleQueryWrapper.select("id").eq("name", "招生计划");
+        articleQueryWrapper.select("id").eq("name", "招生简章");
         ArticleCategory one = articleCategoryService.getOne(articleQueryWrapper);
         return one.getId();
     }

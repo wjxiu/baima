@@ -135,10 +135,6 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
         AdmissionPlan admissionPlan1 = new AdmissionPlan();
         BeanUtils.copyProperties(admissionPlanVo, admissionPlan1);
         Article article = BeanUtil.copyProperties(admissionPlanVo.getArticle(), Article.class);
-        QueryWrapper<ArticleCategory> articleCategoryQueryWrapper = new QueryWrapper<>();
-        articleCategoryQueryWrapper.eq("name", "招生计划");
-        ArticleCategory one = articleCategoryService.getOne(articleCategoryQueryWrapper);
-        article.setAcId(one.getId());
         article.setPublicTime(new Date());
         articleService.updateById(article);
         updateById(admissionPlan1);
