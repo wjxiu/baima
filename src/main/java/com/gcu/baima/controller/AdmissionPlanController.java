@@ -64,9 +64,6 @@ public class AdmissionPlanController {
     @ApiOperation(value = "根据id修改招生计划", notes = "招生计划实体类必须有id")
     @PutMapping("")
     public R updateAdmission(@ApiParam(value = "招生计划实体类") @RequestBody AdmissionVo admissionPlanVo) {
-        //        id不存在
-        if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, admissionPlanVo.getId()))
-            throw new BaimaException(201, "id对应的数据不存在");
         admissionPlanService.updateByAdmissionId(admissionPlanVo);
         return R.ok();
     }

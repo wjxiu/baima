@@ -2,20 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcu.baima.mapper.TrialLessonCommentMapper">
 
-    <select id="queryPage" resultType="com.gcu.baima.entity.VO.TrialLessonCommentVo">
+    <select id="queryPage" resultType="com.gcu.baima.entity.VO.TrialLessonCommentVo"
+            parameterType="com.gcu.baima.entity.TrialLesson">
         SELECT tlc.id,
-               tlc.score,
-               tlc.context,
-               tlc.gmt_create,
-               course.`name`   AS courseName,
-               customer.`name` AS customerName,
-               course.`id`     as courseId
+        tlc.score,
+        tlc.context,
+        tlc.gmt_create,
+        course.`name` AS courseName,
+        customer.`name` AS customerName,
+        course.`id` as courseId
         FROM `trial_lesson_comment` tlc
-                 left join trial_lesson tl on tlc.trial_id = tl.id
-                 LEFT JOIN `course` ON tl.course_id = course.`id`
-                 LEFT JOIN `customer` ON customer.`id` = tlc.customer_id
+        LEFT JOIN trial_lesson tl on tlc.trial_id = tl.id
+        LEFT JOIN `course` ON tl.course_id = course.`id`
+        LEFT JOIN `customer` ON customer.`id` = tlc.customer_id
         where
-
+        1=1
+        <if test="map.courseId != null and map.courseId !='' ">
+            AND course_id like #{map.courseId}
+        </if>
     </select>
     <select id="getAllByCourseId" resultType="com.gcu.baima.entity.VO.TrialLessonCommentVo">
 

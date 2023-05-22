@@ -127,6 +127,7 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     @Override
     public void updateByAdmissionId(AdmissionVo admissionPlanVo) {
         //        id不存在
+
         if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, admissionPlanVo.getId()))
             throw new BaimaException(201, "id对应的数据不存在");
         if (!CheckDBUtil.checkIdEqual(Article.class, admissionPlanVo.getId()))

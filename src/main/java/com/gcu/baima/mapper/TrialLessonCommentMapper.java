@@ -5,6 +5,7 @@ import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.TrialLessonComment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public interface TrialLessonCommentMapper extends BaseMapper<TrialLessonComment> {
 
-    Page<TrialLessonCommentVo> queryPage(Page<TrialLessonCommentVo> voPage, TrialLesson map);
+    Page<TrialLessonCommentVo> queryPage(Page<TrialLessonCommentVo> voPage, @PathVariable("map") TrialLesson map);
 
     List<TrialLessonCommentVo> getAllByCourseId(String courseId);
 }
