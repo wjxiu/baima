@@ -16,6 +16,8 @@ import com.gcu.baima.utils.CheckDBUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务实现类
@@ -66,5 +68,12 @@ public class TrialLessonCommentServiceImpl extends ServiceImpl<TrialLessonCommen
             throw new BaimaException(201, "已经评价，请勿重复评价");
         }
         save(comment);
+    }
+
+    @Override
+    public List<TrialLessonCommentVo> getAllByCourseId(String courseId) {
+        if (!CheckDBUtil.checkIdEqual(Course.class, courseId)) throw new BaimaException(201, "id对应数据不存在");
+        return baseMapper.getAllByCourseId(courseId);
+
     }
 }

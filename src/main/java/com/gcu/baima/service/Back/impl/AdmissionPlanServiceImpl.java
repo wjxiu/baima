@@ -59,7 +59,8 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     public Page<AdmissionVo> pageAdminssion(Long page, Long limit, AdmissionPlan queryVo) {
         Page<AdmissionPlan> planPage = new Page<>(page, limit);
         QueryWrapper<AdmissionPlan> wrapper = new QueryWrapper<>();
-        wrapper.eq(!StringUtils.isEmpty(queryVo.getCourseId()), "course_id", queryVo.getCourseId())
+        String courseId = queryVo.getCourseId();
+        wrapper.eq(!StringUtils.isEmpty(courseId), "course_id", courseId)
                 .eq(!StringUtils.isEmpty(queryVo.getCourseType()), "course_type", queryVo.getCourseType())
                 .like(!StringUtils.isEmpty(queryVo.getName()), "name", queryVo.getName());
         IPage<AdmissionPlan> page1 = page(planPage, wrapper);
@@ -68,6 +69,13 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
             if (CheckDBUtil.checkIdEqual(Article.class, admissionVo.getId())) {
                 ArticleVo articleById = articleService.getArticleById(admissionVo.getId());
                 admissionVo.setArticle(articleById);
+                if (!StringUtils.isEmpty(courseId)) {
+                    Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", courseId));
+                    admissionVo.setCourseName(course.getName());
+                } else {
+                    Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", admissionVo));
+                    admissionVo.setCourseName(course.getName());
+                }
             }
         }
         Page<AdmissionVo> admissionVoPage = new Page<>();
@@ -142,11 +150,13 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
         if (!CheckDBUtil.checkIdEqual(Course.class, courseId)) throw new BaimaException(201, "id对应的数据不存在");
         QueryWrapper<AdmissionPlan> admissionPlanQueryWrapper = new QueryWrapper<>();
         admissionPlanQueryWrapper.eq("course_id", courseId);
+        Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", courseId));
         AdmissionPlan one = getOne(admissionPlanQueryWrapper);
         if (one == null) throw new BaimaException(201, "课程对应的招生计划未创建");
 //        招生表关联的文章
         ArticleVo article = articleService.getArticleById(one.getId());
         AdmissionVo admissionVo = BeanUtil.copyProperties(one, AdmissionVo.class);
+        admissionVo.setCourseName(course.getName());
         ArticleVo articleVo = BeanUtil.copyProperties(article, ArticleVo.class);
         admissionVo.setArticle(articleVo);
         return admissionVo;

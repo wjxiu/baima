@@ -103,7 +103,7 @@ public class ArticleController {
         return R.ok().data("guide", articleVo);
     }
 
-    @ApiOperation(value = "添加一个招生简章", notes = "禁止修改acId")
+    @ApiOperation(value = "更新招生简章", notes = "禁止修改acId")
     @PutMapping("updateGuide")
     public R updateGuide(Article article) {
         articleService.updateGuide(article);

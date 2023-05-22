@@ -11,18 +11,29 @@
                article.id       as authorId,
                manager.username as authorName,
                article.content,
-               article.title
+               article.title,
+               course.name      as courseName
         from admission_plan ap
                  left join article on ap.id = article.id
+                 left join course on ap.course_id = course.id
                  left join manager on manager.id = article.author_id
         where ap.id = #{id}
     </select>
     <select id="getByCourseType"  resultType="com.gcu.baima.entity.VO.AdmissionVo">
-        select ap.id ,ap.name,ap.info,ap.course_type as courseType,ap.charge,ap.duration,ap.year,
-               article.id as authorId,manager.username as authorName
+        select ap.id,
+               ap.name,
+               ap.info,
+               ap.course_type   as courseType,
+               ap.charge,
+               ap.duration,
+               ap.year,
+               article.id       as authorId,
+               manager.username as authorName,
+               course.name      as courseName
         from admission_plan ap
-                 left join article on ap.id=article.id
-                 left join manager on manager.id=article.author_id
-        where ap.course_type=#{course_type}
+                 left join article on ap.id = article.id
+                 left join course on ap.course_id = course.id
+                 left join manager on manager.id = article.author_id
+        where ap.course_type = #{course_type}
     </select>
 </mapper>

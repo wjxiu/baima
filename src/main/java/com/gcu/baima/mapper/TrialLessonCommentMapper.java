@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -19,4 +20,6 @@ import java.util.HashMap;
 public interface TrialLessonCommentMapper extends BaseMapper<TrialLessonComment> {
 
     Page<TrialLessonCommentVo> queryPage(Page<TrialLessonCommentVo> voPage, TrialLesson map);
+
+    List<TrialLessonCommentVo> getAllByCourseId(String courseId);
 }

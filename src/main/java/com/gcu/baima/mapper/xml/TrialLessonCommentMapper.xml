@@ -14,6 +14,20 @@
                  left join trial_lesson tl on tlc.trial_id = tl.id
                  LEFT JOIN `course` ON tl.course_id = course.`id`
                  LEFT JOIN `customer` ON customer.`id` = tlc.customer_id
+        where
 
+    </select>
+    <select id="getAllByCourseId" resultType="com.gcu.baima.entity.VO.TrialLessonCommentVo">
+
+        SELECT tlc.id,
+               tlc.score,
+               tlc.context,
+               tlc.gmt_create,
+               customer.`name` AS customerName
+        FROM `trial_lesson_comment` tlc
+                 LEFT JOIN trial_lesson tl ON tlc.trial_id = tl.id
+                 LEFT JOIN `customer` ON customer.`id` = tlc.customer_id
+                 LEFT JOIN trial_lesson_customer tlcust ON tlc.id = tlcust.trail_lession_id
+        WHERE tl.course_id = #{id}
     </select>
 </mapper>

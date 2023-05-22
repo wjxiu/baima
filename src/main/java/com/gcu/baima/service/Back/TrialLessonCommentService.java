@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.gcu.baima.entity.VO.TrialLessonCommentVo;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -23,4 +24,6 @@ public interface TrialLessonCommentService extends IService<TrialLessonComment> 
     Boolean isRate(String courseId, String customerId);
 
     void addCommont(TrialLessonComment comment);
+
+    List<TrialLessonCommentVo> getAllByCourseId(String courseId);
 }

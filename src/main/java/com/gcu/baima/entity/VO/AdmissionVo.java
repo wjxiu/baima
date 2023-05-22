@@ -21,6 +21,7 @@ public class AdmissionVo {
     private String id;
     private String name;
     private String info;
+    private String courseName;
     private Integer courseType;
     private Integer duration;
     private Integer year;

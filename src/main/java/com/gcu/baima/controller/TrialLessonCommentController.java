@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 试课评论控制器
@@ -58,6 +60,13 @@ public class TrialLessonCommentController {
         Boolean rate = commentService.isRate(courseId, customerId);
         if (rate) return R.ok().message("已评价").data("isRate", 1);
         return R.ok().message("未评价").data("isRate", 0);
+    }
+
+    @ApiOperation("根据课程id获取课程的所有评价")
+    @GetMapping("getAllByCourseId")
+    public R getAllByCourseId(String courseId) {
+        List<TrialLessonCommentVo> lessonCommentVos = commentService.getAllByCourseId(courseId);
+        return R.ok().data("list", lessonCommentVos);
     }
 }
 
