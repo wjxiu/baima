@@ -16,4 +16,6 @@ public interface CourseService extends IService<Course> {
     Boolean isFull(String courseId);
 
     Boolean deleteById(String id);
+
+    void addCourse(Course course, String authorId);
 }

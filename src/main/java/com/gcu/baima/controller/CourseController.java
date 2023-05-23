@@ -48,15 +48,8 @@ public class CourseController {
 
     @ApiOperation("添加课程")
     @PostMapping("")
-    public R addCourse(@ApiParam("课程实体类") @RequestBody(required = false) Course course) {
-//        添加一个对应的试课
-        TrialLesson trialLesson = new TrialLesson();
-        courseService.save(course);
-        trialLesson.setId(course.getId());
-        trialLesson.setCourseId(course.getId());
-        trialLesson.setCurrCustomerNum(0);
-        trialLesson.setLocation("广州");
-        trialLessonService.save(trialLesson);
+    public R addCourse(@ApiParam("课程实体类") @RequestBody(required = false) Course course, String authorId) {
+        courseService.addCourse(course, authorId);
         return R.ok();
     }
 

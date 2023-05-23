@@ -16,6 +16,7 @@ public class AdmissionPlanSaveDTO {
     private String name;
     private String info;
     private Integer courseType;
+    private String courseId;
     private Integer duration;
     private Integer year;
 

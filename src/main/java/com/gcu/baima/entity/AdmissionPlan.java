@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import java.io.Serializable;
@@ -50,7 +51,7 @@ public class AdmissionPlan implements Serializable {
     private Integer duration;
 
     @ApiModelProperty(value = "所属年份，YYYY")
-    private Integer year = new Date().getYear();
+    private Integer year = Calendar.getInstance().get(Calendar.YEAR);
 
     @ApiModelProperty(value = "关联课程id")
     private String courseId;

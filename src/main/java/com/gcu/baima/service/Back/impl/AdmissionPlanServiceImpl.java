@@ -75,12 +75,15 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
                 Article byId = articleService.getById(id);
                 byId.setView(byId.getView() + 1);
                 articleService.updateById(byId);
+//              fixme  课程名称全是null
                 if (!StringUtils.isEmpty(courseId)) {
                     Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", courseId));
                     admissionVo.setCourseName(course.getName());
                 } else {
-                    Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", admissionVo));
-                    admissionVo.setCourseName(course.getName());
+                    Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", admissionVo.getId()));
+                    if (course != null && StringUtils.isEmpty(course.getName())) {
+                        admissionVo.setCourseName(course.getName());
+                    }
                 }
             }
         }
