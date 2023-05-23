@@ -5,35 +5,94 @@
         select ap.id,
                ap.name,
                ap.info,
-               ap.course_type   as courseType,
+               ap.course_type    as courseType,
                ap.duration,
                ap.year,
-               article.id       as authorId,
-               manager.username as authorName,
+               article.author_id as authorId,
+               manager.username  as authorName,
                article.content,
+               article.ac_id,
                article.title,
-               course.name      as courseName
+               course.name       as courseName
         from admission_plan ap
                  left join article on ap.id = article.id
                  left join course on ap.course_id = course.id
                  left join manager on manager.id = article.author_id
         where ap.id = #{id}
     </select>
-    <select id="getByCourseType"  resultType="com.gcu.baima.entity.VO.AdmissionVo">
+    <select id="getByCourseType" resultMap="AdmissionVoResultMap">
         select ap.id,
                ap.name,
                ap.info,
-               ap.course_type   as courseType,
-               ap.charge,
+               ap.course_type      as courseType,
                ap.duration,
                ap.year,
-               article.id       as authorId,
-               manager.username as authorName,
-               course.name      as courseName
+               article.id          as articleId,
+               article.author_id   as authorId,
+               article.public_time as publicTime,
+               article.view,
+               article.ac_id       as categoryId,
+               article.title,
+               article.content,
+               manager.username    as authorName,
+               course.name         as courseName
         from admission_plan ap
                  left join article on ap.id = article.id
                  left join course on ap.course_id = course.id
                  left join manager on manager.id = article.author_id
+                 left join article_category on article.ac_id = article_category.id
         where ap.course_type = #{course_type}
     </select>
+    <select id="pageAdminssionArticle" resultMap="AdmissionVoResultMap">
+        select ap.id,
+        ap.name,
+        ap.info,
+        ap.course_type as courseType,
+        ap.duration,
+        ap.year,
+        article.id as articleId,
+        article.author_id as authorId,
+        article.public_time as publicTime,
+        article.view ,
+        article.ac_id as categoryId,
+        article.title ,
+        article.content ,
+        manager.username as authorName,
+        course.name as courseName
+        from admission_plan ap
+        left join article on ap.id = article.id
+        left join course on ap.course_id = course.id
+        left join manager on manager.id = article.author_id
+        left join article_category on article.ac_id=article_category.id
+        where 1=1
+        <if test="queryVo.courseId !=null and queryVo.courseId!=''">
+            and course.id=#{queryVo.courseId}
+        </if>
+        <if test="queryVo.courseType !=null">
+            and ap.course_type=#{queryVo.courseType}
+        </if>
+        <if test="queryVo.name !=null and queryVo.name!=''">
+            and ap.name=#{queryVo.name}
+        </if>
+    </select>
+    <resultMap id="AdmissionVoResultMap" type="com.gcu.baima.entity.VO.AdmissionVo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="info" column="info"/>
+        <result property="courseType" column="courseType"/>
+        <result property="duration" column="duration"/>
+        <result property="year" column="year"/>
+        <result property="authorId" column="authorId"/>
+        <result property="authorName" column="authorName"/>
+        <result property="courseName" column="courseName"/>
+        <association property="article" javaType="com.gcu.baima.entity.VO.ArticleVo">
+            <id property="id" column="articleId"/>
+            <result property="publicTime" column="publicTime"/>
+            <result property="view" column="view"/>
+            <result property="authorname" column="authorname"/>
+            <result property="title" column="title"/>
+            <result property="categoryId" column="categoryId"/>
+            <result property="content" column="content"/>
+        </association>
+    </resultMap>
 </mapper>

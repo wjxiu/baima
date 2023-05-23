@@ -58,39 +58,10 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     @Transactional
     @Override
     public Page<AdmissionVo> pageAdminssion(Long page, Long limit, AdmissionPlan queryVo) {
-        Page<AdmissionPlan> planPage = new Page<>(page, limit);
-        QueryWrapper<AdmissionPlan> wrapper = new QueryWrapper<>();
-        String courseId = queryVo.getCourseId();
-        wrapper.eq(!StringUtils.isEmpty(courseId), "course_id", courseId)
-                .eq(!StringUtils.isEmpty(queryVo.getCourseType()), "course_type", queryVo.getCourseType())
-                .like(!StringUtils.isEmpty(queryVo.getName()), "name", queryVo.getName());
-        IPage<AdmissionPlan> page1 = page(planPage, wrapper);
-        List<AdmissionVo> admissionVos = BeanUtil.copyToList(page1.getRecords(), AdmissionVo.class);
-        for (AdmissionVo admissionVo : admissionVos) {
-            if (CheckDBUtil.checkIdEqual(Article.class, admissionVo.getId())) {
-                ArticleVo articleById = articleService.getArticleById(admissionVo.getId());
-                admissionVo.setArticle(articleById);
-//                更新浏览量
-                String id = articleById.getId();
-                Article byId = articleService.getById(id);
-                byId.setView(byId.getView() + 1);
-                articleService.updateById(byId);
-//              fixme  课程名称全是null
-                if (!StringUtils.isEmpty(courseId)) {
-                    Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", courseId));
-                    admissionVo.setCourseName(course.getName());
-                } else {
-                    Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", admissionVo.getId()));
-                    if (course != null && StringUtils.isEmpty(course.getName())) {
-                        admissionVo.setCourseName(course.getName());
-                    }
-                }
-            }
-        }
-        Page<AdmissionVo> admissionVoPage = new Page<>();
-        BeanUtil.copyProperties(page1, admissionVoPage);
-        admissionVoPage.setRecords(admissionVos);
-        admissionVoPage.setPages(page1.getPages());
+
+        Page<AdmissionVo> admissionVoPage = new Page<>(page, limit);
+        List<AdmissionVo> l = baseMapper.pageAdminssionArticle(admissionVoPage, queryVo);
+        admissionVoPage.setRecords(l);
         return admissionVoPage;
     }
     @Override

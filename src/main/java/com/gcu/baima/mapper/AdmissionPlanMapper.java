@@ -1,5 +1,6 @@
 package com.gcu.baima.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.entity.AdmissionPlan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gcu.baima.entity.VO.AdmissionVo;
@@ -18,4 +19,6 @@ public interface AdmissionPlanMapper extends BaseMapper<AdmissionPlan> {
     public AdmissionVo getByid(String id);
 
     public AdmissionVo getByCourseType(Integer courseType);
+
+    List<AdmissionVo> pageAdminssionArticle(Page<AdmissionVo> admissionVoPage, AdmissionPlan queryVo);
 }
