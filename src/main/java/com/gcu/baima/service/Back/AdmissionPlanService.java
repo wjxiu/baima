@@ -35,4 +35,6 @@ public interface AdmissionPlanService extends IService<AdmissionPlan> {
     void updateByAdmissionId(AdmissionVo admissionPlanVo);
 
     AdmissionVo getByCourseId(String courseId);
+
+    String getAdmissionPlanACId();
 }

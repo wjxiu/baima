@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gcu.baima.Enum.CourseType;
 import com.gcu.baima.entity.Article;
 import com.gcu.baima.entity.Course;
+import com.gcu.baima.entity.DTO.AdmissionPlanSaveDTO;
 import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.VO.ArticleVo;
 import com.gcu.baima.entity.VO.CourseVo;
@@ -56,12 +57,11 @@ public class CourseController {
     @ApiOperation("根据课程id修改课程")
     @PutMapping("")
     public R updateCourse(@ApiParam("课程实体类") @RequestBody Course course) {
-        //        id不存在
-        if (!CheckDBUtil.checkIdEqual(Course.class, course.getId())) throw new BaimaException(201, "id对应的数据不存在");
-        courseService.updateById(course);
+
+
+        courseService.updateCourse(course);
         return R.ok();
     }
-
     @ApiOperation(value = "根据课程id删除课程", notes = "同时删除试听课程及其相关的评论和报名")
     @DeleteMapping("{id}")
     public R deleteById(@ApiParam("课程id") @PathVariable String id) {
@@ -79,15 +79,16 @@ public class CourseController {
         Course course = courseService.getById(id);
         return R.ok().data("course", course);
     }
-//todo 分页参数查询未知
-@ApiOperation("分页带参数获取课程列表")
-@PostMapping("page/{pageNo}/{limit}")
-public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("页大小") @PathVariable Long limit, @ApiParam("查询参数类") @RequestBody HashMap<String, Object> map) {
-    Page<Course> coursePage = new Page(pageNo, limit);
-    QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
-    courseService.page(coursePage, courseQueryWrapper);
-    return R.ok().data("pageRegistVo", coursePage);
-}
+
+    //todo 分页参数查询未知
+    @ApiOperation("分页带参数获取课程列表")
+    @PostMapping("page/{pageNo}/{limit}")
+    public R pageCourse(@ApiParam("页码") @PathVariable Long pageNo, @ApiParam("页大小") @PathVariable Long limit, @ApiParam("查询参数类") @RequestBody HashMap<String, Object> map) {
+        Page<Course> coursePage = new Page(pageNo, limit);
+        QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
+        courseService.page(coursePage, courseQueryWrapper);
+        return R.ok().data("pageRegistVo", coursePage);
+    }
 
     //    查询所有课程，为了报名选择课程
     @ApiOperation("查询所有课程，为了用户报名选择课程")

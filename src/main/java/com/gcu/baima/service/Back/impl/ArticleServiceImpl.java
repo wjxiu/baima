@@ -84,9 +84,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
         article.setAcId(getGuideAcId());
         Article one = getOne(articleQueryWrapper);
-        if (one != null) {
-            throw new BaimaException(201, "已存在一篇招生简章");
-        }
+        if (one != null) throw new BaimaException(201, "已存在一篇招生简章");
         String id = UUID.randomUUID().toString(true).substring(0, 19);
         article.setId(id);
         article.setAcId(getGuideAcId());

@@ -1,6 +1,6 @@
 package com.gcu.baima.service.Back.impl;
 
-import com.gcu.baima.entity.AdmissionPlan;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.baima.entity.Course;
 import com.gcu.baima.entity.DTO.AdmissionPlanSaveDTO;
 import com.gcu.baima.entity.Manager;
@@ -12,14 +12,11 @@ import com.gcu.baima.service.Back.CourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gcu.baima.service.Back.TrialLessonService;
 import com.gcu.baima.utils.CheckDBUtil;
-import com.gcu.baima.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * <p>
@@ -78,5 +75,15 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         dto.setTitle(course.getName() + "招生计划");
         dto.setYear(Calendar.getInstance().get(Calendar.YEAR));
         admissionPlanService.saveAdmission(dto);
+    }
+
+    @Override
+    public void updateCourse(Course course) {
+        //        id不存在
+        if (!CheckDBUtil.checkIdEqual(Course.class, course.getId())) throw new BaimaException(201, "id对应的数据不存在");
+        QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
+        courseQueryWrapper.eq("name", course.getName());
+        if (count(courseQueryWrapper) > 1) throw new BaimaException(201, "名字重复");
+        updateById(course);
     }
 }

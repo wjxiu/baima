@@ -110,11 +110,8 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
         save(admissionPlan);
         Article article = BeanUtil.copyProperties(dto, Article.class);
         article.setId(admissionPlan.getId());
-//        暂时写死
-        QueryWrapper<ArticleCategory> articleCategoryQueryWrapper = new QueryWrapper<>();
-        articleCategoryQueryWrapper.eq("name", "招生计划");
-        ArticleCategory one = articleCategoryService.getOne(articleCategoryQueryWrapper);
-        article.setAcId(one.getId());
+//        强制设置为招生计划
+        article.setAcId(getAdmissionPlanACId());
         article.setPublicTime(new Date());
         article.setAuthorId(dto.getAuthorId());
         articleService.save(article);
@@ -141,11 +138,16 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
             throw new BaimaException(201, "id对应的数据不存在");
         if (!CheckDBUtil.checkIdEqual(Article.class, admissionPlanVo.getId()))
             throw new BaimaException(201, "id对应的数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Article.class, admissionPlanVo.getArticle().getTitle()))
+            throw new BaimaException(201, "名字重复");
         AdmissionPlan vo = getById(admissionPlanVo.getId());
         AdmissionPlan admissionPlan1 = new AdmissionPlan();
         BeanUtils.copyProperties(admissionPlanVo, admissionPlan1);
         Article article = BeanUtil.copyProperties(admissionPlanVo.getArticle(), Article.class);
+        String title = article.getTitle();
         article.setPublicTime(new Date());
+//        强制设置文章分类id为招生计划
+        article.setAcId(getAdmissionPlanACId());
         articleService.updateById(article);
         updateById(admissionPlan1);
     }
@@ -167,4 +169,14 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
         admissionVo.setArticle(articleVo);
         return admissionVo;
     }
+
+    @Override
+    public String getAdmissionPlanACId() {
+        QueryWrapper<ArticleCategory> articleCategoryQueryWrapper = new QueryWrapper<>();
+        articleCategoryQueryWrapper.eq("name", "招生计划").select("id");
+        ArticleCategory one = articleCategoryService.getOne(articleCategoryQueryWrapper);
+        return one.getId();
+    }
+
+
 }
