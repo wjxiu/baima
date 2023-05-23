@@ -32,6 +32,7 @@ public class TrialLessonCommentController {
     @Autowired
     TrialLessonCommentService commentService;
 
+    @ApiOperation("根据id删除评论")
     @DeleteMapping("{id}")
     public R deleteById(@PathVariable String id) {
         if (!CheckDBUtil.checkIdEqual(TrialLessonComment.class, id)) throw new BaimaException(201, "id对应的数据不存在");
@@ -39,13 +40,14 @@ public class TrialLessonCommentController {
         return R.ok();
     }
 
+    @ApiOperation("添加一个评论")
     @PostMapping("")
     public R add(@RequestBody TrialLessonComment Comment) {
         commentService.addCommont(Comment);
         return R.ok();
     }
 
-    //    todo 分页参数查询，根据课程id查
+    @ApiOperation("分页参数查询，可以根据课程id查")
     @PostMapping("/page/{pageNo}/{limit}")
     public R page(@PathVariable Long pageNo, @PathVariable Long limit,
                   @ApiParam() @RequestBody(required = false) TrialLesson trialLesson) {
