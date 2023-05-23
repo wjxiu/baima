@@ -55,6 +55,7 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
      * @param queryVo 查询条件vo 现在没确定
      * @return
      */
+    @Transactional
     @Override
     public Page<AdmissionVo> pageAdminssion(Long page, Long limit, AdmissionPlan queryVo) {
         Page<AdmissionPlan> planPage = new Page<>(page, limit);
@@ -69,6 +70,11 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
             if (CheckDBUtil.checkIdEqual(Article.class, admissionVo.getId())) {
                 ArticleVo articleById = articleService.getArticleById(admissionVo.getId());
                 admissionVo.setArticle(articleById);
+//                更新浏览量
+                String id = articleById.getId();
+                Article byId = articleService.getById(id);
+                byId.setView(byId.getView() + 1);
+                articleService.updateById(byId);
                 if (!StringUtils.isEmpty(courseId)) {
                     Course course = courseService.getOne(new QueryWrapper<Course>().select("name").eq("id", courseId));
                     admissionVo.setCourseName(course.getName());
@@ -81,6 +87,7 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
         Page<AdmissionVo> admissionVoPage = new Page<>();
         BeanUtil.copyProperties(page1, admissionVoPage);
         admissionVoPage.setRecords(admissionVos);
+        admissionVoPage.setPages(page1.getPages());
         return admissionVoPage;
     }
     @Override
@@ -127,7 +134,6 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     @Override
     public void updateByAdmissionId(AdmissionVo admissionPlanVo) {
         //        id不存在
-
         if (!CheckDBUtil.checkIdEqual(AdmissionPlan.class, admissionPlanVo.getId()))
             throw new BaimaException(201, "id对应的数据不存在");
         if (!CheckDBUtil.checkIdEqual(Article.class, admissionPlanVo.getId()))

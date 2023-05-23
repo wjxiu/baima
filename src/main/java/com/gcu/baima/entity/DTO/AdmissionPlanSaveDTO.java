@@ -21,8 +21,6 @@ public class AdmissionPlanSaveDTO {
 
     @ApiModelProperty(value = "文章标题")
     private String title;
-
-
     @ApiModelProperty(value = "点击量")
     private Integer view;
     @ApiModelProperty(value = "作者id")

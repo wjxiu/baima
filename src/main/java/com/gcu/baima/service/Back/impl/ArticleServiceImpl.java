@@ -43,16 +43,25 @@ import java.util.Date;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     @Autowired
     ArticleCategoryService articleCategoryService;
-
     @Override
     public ArticleVo getArticleById(String id) {
         if (!CheckDBUtil.checkIdEqual(Article.class, id)) throw new BaimaException(201, "id对应数据不存在");
-        return baseMapper.getArticleById(id);
+        Article byId = getById(id);
+//        更新浏览量
+        byId.setView(byId.getView() + 1);
+        updateById(byId);
+        ArticleVo articleById = baseMapper.getArticleById(id);
+        return articleById;
     }
 
     @Override
     public ArticleVo getGuide() {
-        return baseMapper.getGuide();
+        ArticleVo guide = baseMapper.getGuide();
+        String id = guide.getId();
+        Article byId = getById(id);
+        byId.setView(byId.getView() + 1);
+        updateById(byId);
+        return guide;
     }
 
     @Override
