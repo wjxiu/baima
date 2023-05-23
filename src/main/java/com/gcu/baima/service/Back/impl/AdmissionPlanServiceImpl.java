@@ -45,6 +45,7 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
     @Autowired
     ArticleCategoryService articleCategoryService;
 
+
     /**
      * todo:换为自定义查询语句分页
      * 分页查询招生计划
@@ -109,8 +110,9 @@ public class AdmissionPlanServiceImpl extends ServiceImpl<AdmissionPlanMapper, A
             throw new BaimaException(201, "id对应的数据不存在");
         if (!CheckDBUtil.checkIdEqual(Article.class, admissionPlanVo.getId()))
             throw new BaimaException(201, "id对应的数据不存在");
-        if (!CheckDBUtil.checkIdEqual(Article.class, admissionPlanVo.getArticle().getTitle()))
-            throw new BaimaException(201, "名字重复");
+        QueryWrapper<AdmissionPlan> admissionPlanQueryWrapper = new QueryWrapper<>();
+        admissionPlanQueryWrapper.eq("name", admissionPlanVo.getName());
+        if (count(admissionPlanQueryWrapper) > 1) throw new BaimaException(201, "名字重复");
         AdmissionPlan vo = getById(admissionPlanVo.getId());
         AdmissionPlan admissionPlan1 = new AdmissionPlan();
         BeanUtils.copyProperties(admissionPlanVo, admissionPlan1);
