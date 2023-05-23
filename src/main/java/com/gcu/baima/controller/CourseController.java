@@ -7,6 +7,7 @@ import com.gcu.baima.Enum.CourseType;
 import com.gcu.baima.entity.Article;
 import com.gcu.baima.entity.Course;
 import com.gcu.baima.entity.DTO.AdmissionPlanSaveDTO;
+import com.gcu.baima.entity.DTO.CourseSaveDTO;
 import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.entity.VO.ArticleVo;
 import com.gcu.baima.entity.VO.CourseVo;
@@ -49,8 +50,8 @@ public class CourseController {
 
     @ApiOperation("添加课程")
     @PostMapping("")
-    public R addCourse(@ApiParam("课程实体类") @RequestBody(required = false) Course course, String authorId) {
-        courseService.addCourse(course, authorId);
+    public R addCourse(@ApiParam("课程实体类") @RequestBody CourseSaveDTO course) {
+        courseService.addCourse(course);
         return R.ok();
     }
 

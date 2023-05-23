@@ -1,8 +1,10 @@
 package com.gcu.baima.service.Back.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.baima.entity.Course;
 import com.gcu.baima.entity.DTO.AdmissionPlanSaveDTO;
+import com.gcu.baima.entity.DTO.CourseSaveDTO;
 import com.gcu.baima.entity.Manager;
 import com.gcu.baima.entity.TrialLesson;
 import com.gcu.baima.exception.BaimaException;
@@ -51,12 +53,15 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Transactional
     @Override
-    public void addCourse(Course course, String authorId) {
+    public void addCourse(CourseSaveDTO coursedto) {
+
+        String authorId = coursedto.getAuthorId();
         if (!CheckDBUtil.checkIdEqual(Manager.class, authorId)) throw new BaimaException(201, "id对应的数据不存在");
-        if (CheckDBUtil.checkStringEqual(Course.class, "name", course.getName()))
+        if (CheckDBUtil.checkStringEqual(Course.class, "name", coursedto.getName()))
             throw new BaimaException(201, "名字已经存在");
         //        添加一个对应的试课
         TrialLesson trialLesson = new TrialLesson();
+        Course course = BeanUtil.copyProperties(coursedto, Course.class);
         save(course);
         trialLesson.setId(course.getId());
         trialLesson.setCourseId(course.getId());
