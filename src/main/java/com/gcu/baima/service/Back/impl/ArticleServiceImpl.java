@@ -57,17 +57,27 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public void updateGuide(Article article) {
-        if (!CheckDBUtil.checkIdEqual(Article.class, article.getId())) throw new BaimaException(201, "id对应数据不存在");
-        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
-            throw new BaimaException(201, "名字重复");
+        ArticleVo guide = getGuide();
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("title", article.getTitle());
+        int count = count(articleQueryWrapper);
+        if (count > 1) throw new BaimaException(201, "名字重复");
         if (article.getPublicTime() == null) article.setPublicTime(new Date());
+        article.setId(guide.getId());
         article.setAcId(getGuideAcId());
         updateById(article);
     }
 
     @Override
     public void addGuide(Article article) {
-
+        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
+            throw new BaimaException(201, "名字重复");
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        article.setAcId(getGuideAcId());
+        Article one = getOne(articleQueryWrapper);
+        if (one != null) {
+            throw new BaimaException(201, "已存在一篇招生简章");
+        }
         String id = UUID.randomUUID().toString(true).substring(0, 19);
         article.setId(id);
         article.setAcId(getGuideAcId());

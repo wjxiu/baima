@@ -36,6 +36,6 @@
                  join manager on article.author_id = manager.id
         where ac_id = (select id
                        from article_category
-                       where name = '招生计划')
+                       where name = '招生简章')
     </select>
 </mapper>

@@ -91,7 +91,7 @@ public class ArticleController {
 
         return R.ok();
     }
-
+    @ApiOperation(value = "获取招生简章")
     @GetMapping("getGuide")
     public R getGuide() {
         ArticleVo articleVo = articleService.getGuide();
