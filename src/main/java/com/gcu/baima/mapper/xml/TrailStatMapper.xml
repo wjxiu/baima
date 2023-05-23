@@ -21,7 +21,7 @@
         #申请报名不同类型课程人数占比
         SELECT COUNT(1) AS num, course.`type`, course.id
         FROM `registration` regist
-                 LEFT JOIN course ON course.id = regist.`perfer_course_id`
+                 JOIN course ON course.id = regist.`perfer_course_id`
         GROUP BY course.`type`
     </select>
     <select id="getAvgRate" resultType="java.util.Map">
