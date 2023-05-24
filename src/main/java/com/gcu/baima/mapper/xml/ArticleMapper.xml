@@ -28,7 +28,7 @@
                article.view,
                article.title,
                article.content,
-               '招生计划'               as categoryName,
+               '招生简章'               as categoryName,
                article.ac_id        as categoryId,
                article.gmt_modified as gmtModified,
                article.gmt_create   as gmtCreate

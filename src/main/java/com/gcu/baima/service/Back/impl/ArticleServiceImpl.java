@@ -7,6 +7,7 @@ import cn.hutool.poi.word.Word07Writer;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gcu.baima.entity.Article;
 import com.gcu.baima.entity.ArticleCategory;
+import com.gcu.baima.entity.Customer;
 import com.gcu.baima.entity.VO.ArticleVo;
 import com.gcu.baima.exception.BaimaException;
 import com.gcu.baima.mapper.ArticleMapper;
@@ -19,6 +20,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 
 import javax.servlet.ServletOutputStream;
@@ -45,7 +47,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     ArticleCategoryService articleCategoryService;
     @Override
     public ArticleVo getArticleById(String id) {
-        if (!CheckDBUtil.checkIdEqual(Article.class, id)) throw new BaimaException(201, "id对应数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Article.class, id)) throw new BaimaException(201, "id对应文章不存在");
         Article byId = getById(id);
 //        更新浏览量
         byId.setView(byId.getView() + 1);
@@ -57,6 +59,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ArticleVo getGuide() {
         ArticleVo guide = baseMapper.getGuide();
+        if (guide == null) throw new BaimaException(201, "没有招生简章");
         String id = guide.getId();
         Article byId = getById(id);
         byId.setView(byId.getView() + 1);
@@ -67,27 +70,46 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public void updateGuide(Article article) {
         ArticleVo guide = getGuide();
-        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
-        articleQueryWrapper.eq("title", article.getTitle());
-        int count = count(articleQueryWrapper);
-        if (count > 1) throw new BaimaException(201, "名字重复");
-        if (article.getPublicTime() == null) article.setPublicTime(new Date());
+        if (checkTitle(article.getTitle())) throw new BaimaException(201, "名字重复");
+        article.setPublicTime(new Date());
         article.setId(guide.getId());
         article.setAcId(getGuideAcId());
         updateById(article);
     }
 
+    /**
+     * 检查标题是否重复
+     *
+     * @param title 标题
+     * @return 重复 返回 true,不重复返回false
+     */
+    @Override
+    public boolean checkTitle(String title) {
+        if (StringUtils.isEmpty(title)) return false;
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("title", title);
+        int count = count(articleQueryWrapper);
+        return count > 1;
+    }
+
+    @Override
+    public void deleteGuide() {
+        ArticleVo guide = baseMapper.getGuide();
+        if (guide == null) throw new BaimaException(201, "没有招生简章");
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("ac_Id", getGuideAcId());
+//        删除招生简章文章
+        remove(articleQueryWrapper);
+    }
+
     @Override
     public void addGuide(Article article) {
-        if (CheckDBUtil.checkStringEqual(Article.class, "title", article.getTitle()))
-            throw new BaimaException(201, "名字重复");
-        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
         article.setAcId(getGuideAcId());
-        Article one = getOne(articleQueryWrapper);
-        if (one != null) throw new BaimaException(201, "已存在一篇招生简章");
+        ArticleVo guide = baseMapper.getGuide();
+        if (guide != null) throw new BaimaException(201, "已存在一篇招生简章");
+        if (checkTitle(article.getTitle())) throw new BaimaException(201, "名字重复");
         String id = UUID.randomUUID().toString(true).substring(0, 19);
         article.setId(id);
-        article.setAcId(getGuideAcId());
         if (article.getPublicTime() == null) article.setPublicTime(new Date());
         save(article);
     }
@@ -131,6 +153,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         QueryWrapper<ArticleCategory> articleQueryWrapper = new QueryWrapper<>();
         articleQueryWrapper.select("id").eq("name", "招生简章");
         ArticleCategory one = articleCategoryService.getOne(articleQueryWrapper);
+        if (one == null || StringUtils.isEmpty(one.getId())) throw new BaimaException(201, "招生简章目录未创建");
         return one.getId();
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        if (!CheckDBUtil.checkIdEqual(Article.class, article.getId())) throw new BaimaException(201, "id对应数据不存在");
+        if (!CheckDBUtil.checkIdEqual(Customer.class, article.getAuthorId()))
+            throw new BaimaException(201, "id对应数据不存在");
+        article.setPublicTime(new Date());
+        updateById(article);
     }
 }

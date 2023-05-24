@@ -31,4 +31,10 @@ public interface ArticleService extends IService<Article> {
     void add(Article article);
 
     public String getGuideAcId();
+
+    void updateArticle(Article article);
+
+    boolean checkTitle(String title);
+
+    void deleteGuide();
 }

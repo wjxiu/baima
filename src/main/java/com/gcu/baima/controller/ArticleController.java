@@ -65,11 +65,9 @@ public class ArticleController {
     @ApiOperation("修改文章")
     @PutMapping("")
     public R update(@RequestBody Article article) {
-        if (!CheckDBUtil.checkIdEqual(Article.class, article.getId())) throw new BaimaException(201, "id对应数据不存在");
-        if (!CheckDBUtil.checkIdEqual(Customer.class, article.getAuthorId()))
-            throw new BaimaException(201, "id对应数据不存在");
-        article.setPublicTime(new Date());
-        articleService.updateById(article);
+        articleService.updateArticle(article);
+
+
         return R.ok();
     }
 
@@ -98,10 +96,16 @@ public class ArticleController {
         return R.ok().data("guide", articleVo);
     }
 
-    @ApiOperation(value = "更新招生简章", notes = "禁止修改acId")
+    @ApiOperation(value = "更新招生简章", notes = "禁止修改acId,只需要authorId content title")
     @PutMapping("updateGuide")
     public R updateGuide(@RequestBody Article article) {
         articleService.updateGuide(article);
+        return R.ok();
+    }
+
+    @DeleteMapping("deleteGuide")
+    public R deleteGuide() {
+        articleService.deleteGuide();
         return R.ok();
     }
 
@@ -110,7 +114,6 @@ public class ArticleController {
     public ResponseEntity downloadGuide(HttpServletResponse response) {
         articleService.downloadGuide(response);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 }
 
