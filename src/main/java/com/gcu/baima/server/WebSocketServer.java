@@ -2,6 +2,8 @@ package com.gcu.baima.server;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.net.Ipv4Util;
+import cn.hutool.core.net.url.UrlBuilder;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.gcu.baima.encoder.BaseInfoModelEncoder;
 import com.gcu.baima.encoder.BaseResponseMessageEncoder;
@@ -19,6 +21,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Slf4j
 @Component
-@ServerEndpoint(value = "/api/websocket/{type}/{id}", encoders = {BaseInfoModelEncoder.class, BaseResponseMessageEncoder.class})
+@ServerEndpoint(value = "/api/websocket/{type}", encoders = {BaseInfoModelEncoder.class, BaseResponseMessageEncoder.class})
 public class WebSocketServer {
     //由于加上了@ServerEndpoint，所以这个是不被springboot管理的，需要特殊设置一下
     private static ChatLogService chatLogService;
@@ -53,26 +56,30 @@ public class WebSocketServer {
     private static HashMap<String, String> bindKfClients = new HashMap<>();
 
     @OnOpen()
-    public void OnOpen(Session session, @PathParam("id") String clientId, @PathParam("type") Integer type) {
-        this.id = clientId;
+    public void OnOpen(Session session, @PathParam("type") Integer type) {
+        URI requestURI = session.getRequestURI();
+        String query = requestURI.getQuery();
+        String[] split = query.split("=");
+        log.info("参数{}", split[1]);
+        this.id = split[1];
         this.session = session;
         UserMessageModel userMessageModel = new UserMessageModel();
-        userMessageModel.setMessage("你的id为:" + clientId);
-        userMessageModel.setFromId(clientId);
+        userMessageModel.setMessage("你的id为:" + id);
+        userMessageModel.setFromId(id);
         if (type == 0) {
             userMessageModel.setToType("KF");
             userMessageModel.setFromType("USER");
         } else {
             userMessageModel.setToType("USER");
             userMessageModel.setFromType("KF");
-            KFMap.put(clientId, session);
+            KFMap.put(id, session);
         }
 
         String json = new Gson().toJson(userMessageModel);
         sendMessage(json);
-        if (!sessionMap.containsKey(clientId)) {
+        if (!sessionMap.containsKey(id)) {
             onlineClient.addAndGet(1);
-            sessionMap.put(clientId, session);
+            sessionMap.put(id, session);
         }
 //        if (!CollectionUtils.isEmpty(offlineUserMessMap)&&offlineUserMessMap.containsKey(clientId)) {
 //            Queue<UserMessageModel> userMessageModels = offlineUserMessMap.get(clientId);
@@ -85,10 +92,11 @@ public class WebSocketServer {
 //            offlineUserMessMap.remove(clientId);
 //        }
         log.info("当前人数为：{}", onlineClient.get());
-        log.info("链接成功,id:{}", clientId);
+        log.info("链接成功,id:{}", id);
     }
+
     @OnMessage()
-    public void OnMessage(Session session, String mess, @PathParam("id") String clientId) {
+    public void OnMessage(Session session, String mess) {
         Gson gson = new Gson();
         UserMessageModel userMessageModel = new Gson().fromJson(mess, UserMessageModel.class);
         String fromId = userMessageModel.getFromId();
@@ -159,13 +167,13 @@ public class WebSocketServer {
     }
 
     @OnClose()
-    public void OnClose(Session session, @PathParam("id") String clientId) {
-        sessionMap.remove(clientId);
+    public void OnClose(Session session) {
+        sessionMap.remove(id);
         onlineClient.decrementAndGet();
         this.session = null;
-        bindKfClients.remove(clientId);
-        KFMap.remove(clientId);
-        log.info("信息:id为{}关闭链接", clientId);
+        bindKfClients.remove(id);
+        KFMap.remove(id);
+        log.info("信息:id为{}关闭链接", id);
         log.info("当前人数为：{}", onlineClient.get());
     }
 

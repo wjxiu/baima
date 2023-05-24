@@ -10,7 +10,7 @@
 <!--<input type="text" id="acceptId" placeholder="好友id"/>-->
 
 <button onclick="send()">发送</button>
-<button onclick="cleanALl()">清空</button>
+<button onclick="cleanAll()">清空</button>
 <button onclick="closeWebsocket()">关闭链接</button>
 <div id="infoData" style="background-color: #d8aaaa;
 
@@ -21,7 +21,7 @@
     var uid = Date.now();
     var websocket = null;
     //判断当前浏览器是否支持WebSocket
-    websocket = new WebSocket("ws://127.0.0.1:8081/api/websocket/0/" + uid);
+    websocket = new WebSocket("ws://127.0.0.1:8081/api/websocket/0/?id=" + uid);
     let model = {
         message: "", //消息
         fromType: "USER", //识别参数

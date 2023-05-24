@@ -84,9 +84,7 @@ public class ArticleController {
     @ApiOperation(value = "添加一个招生简章", notes = "只需要" + "authorId content title")
     @PostMapping("addGuide")
     public R addGuide(@RequestBody Article article) {
-
         articleService.addGuide(article);
-
         return R.ok();
     }
     @ApiOperation(value = "获取招生简章")
