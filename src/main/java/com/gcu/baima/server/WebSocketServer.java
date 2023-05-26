@@ -227,6 +227,7 @@ public class WebSocketServer {
             Set<String> keys = KFMap.keySet();
 
             List<String> list = new ArrayList<String>(keys);
+            if (list == null || list.isEmpty()) return null;
             int i = RandomUtil.randomInt(0, list.size());
             KFid = list.get(i);
 //            不符合情况的客服：下线的客服或者不存在这个客服
