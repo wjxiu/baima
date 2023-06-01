@@ -11,7 +11,7 @@
     </select>
     <select id="getCourseRate" resultType="java.util.Map">
         #申请试听不同类型课程人数占比
-        SELECT COUNT(1) AS num, course.`type`, course.id as id
+        SELECT COUNT(1) AS num, course.`type`, course.`type` as id
         FROM `trial_lesson_customer` tlc
                  LEFT JOIN `trial_lesson` tl ON tl.id = tlc.trail_lession_id
                  LEFT JOIN course ON course.id = tl.course_id
@@ -19,7 +19,7 @@
     </select>
     <select id="getApplyRate" resultType="java.util.Map">
         #申请报名不同类型课程人数占比
-        SELECT COUNT(1) AS num, course.`type`, course.id as id
+        SELECT COUNT(1) AS num, course.`type`, course.`type` as id
         FROM `registration` regist
                  JOIN course ON course.id = regist.`perfer_course_id`
         GROUP BY course.`type`
