@@ -46,10 +46,7 @@
 
     function send() {
         model.fromType = "KF"
-        model.fromId
-        //todo 客服id从页面获取，或者传token
         model.toId = document.getElementById("toId").value;
-        console.log('这是客服发送的toid')
         model.message = document.getElementById("message").value
         console.log(model)
         websocket.send(JSON.stringify(model));

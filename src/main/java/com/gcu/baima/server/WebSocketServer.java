@@ -115,7 +115,7 @@ public class WebSocketServer {
         String host = session.getRequestURI().getHost();
         long ip = Ipv4Util.ipv4ToLong(host);
         chatLog.setFromIp(ip);
-        chatLogService.save(chatLog);
+//        chatLogService.save(chatLog);
 //        if (!sessionMap.containsKey(acceptId)){
 ////            添加到离线用户消息列表
 //            Queue<UserMessageModel> list = offlineUserMessMap.getOrDefault(acceptId, new LinkedList<>());
@@ -219,6 +219,7 @@ public class WebSocketServer {
             return null;
         }
         String KFid = bindKfClients.get(userId);
+        if (!StringUtils.isEmpty(KFid) &&KFMap.containsKey(KFid)) return KFid;
         int count = 0;
 //        循环找出在线用户
         while (flag || count < KFMap.size() || StringUtils.isEmpty(KFid) || !KFMap.containsKey(KFid) || KFMap.get(KFid) == null) {
