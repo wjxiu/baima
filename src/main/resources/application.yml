@@ -25,6 +25,6 @@ aliyun:
   oss:
     file:
       endpoint: oss-cn-beijing.aliyuncs.com
-      keyid: LTAI5tGJZhgU5pJAHgVDsHdB
-      keysecret: Nu1T0PLWeuIQbYFi9ONJ8dPiQj70r4
+      keyid: xxx
+      keysecret: xxxx
       bucketname: edu-guli-2023-04
