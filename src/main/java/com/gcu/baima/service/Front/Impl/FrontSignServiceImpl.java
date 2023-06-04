@@ -39,7 +39,7 @@ public class FrontSignServiceImpl implements FrontSignService {
             throw new BaimaException(201, "没有这个用户名");
         }
         String s = SecureUtil.md5().digestHex(loginVo.getPassword());
-        if (s.equalsIgnoreCase(loginVo.getPassword())) {
+        if (!s.equalsIgnoreCase(one.getPassword())) {
             throw new BaimaException(201, "登录失败");
         }
         return JwtHelper.createToken(one.getId(), one.getName());
