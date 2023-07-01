@@ -8,9 +8,9 @@ spring:
     active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/baima?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&allowMultiQueries=true
-    username: root
-    password: bXY%qsYK06
+    url: jdbc:mysql://localhost:xxxx/baima?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: xxx
+    password: xxx
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
