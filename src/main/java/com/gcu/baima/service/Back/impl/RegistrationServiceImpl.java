@@ -76,10 +76,12 @@ public class RegistrationServiceImpl extends ServiceImpl<RegistrationMapper, Reg
 
     @Override
     public void addRegistration(RegistrationDto registrationVo) {
-        boolean b = customerService.updateById(registrationVo.getCustomer());
-        check(registrationVo.getCustomer().getId(), registrationVo.getCourseId());
+        Customer customer = registrationVo.getCustomer();
+        customer.setPassword(null);
+        boolean b = customerService.updateById(customer);
+        check(customer.getId(), registrationVo.getCourseId());
         Registration registration = new Registration();
-        registration.setCustomerId(registrationVo.getCustomer().getId());
+        registration.setCustomerId(customer.getId());
         registration.setPerferCourseId(registrationVo.getCourseId());
         //        设置状态为待审核
         registration.setEnrollStatus(EnrollStatus.待审核.value());

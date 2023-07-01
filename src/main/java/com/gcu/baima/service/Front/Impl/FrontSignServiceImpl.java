@@ -29,8 +29,12 @@ public class FrontSignServiceImpl implements FrontSignService {
     //前台登录
     @Override
     public String loginFront(LoginVo loginVo) {
-        if (StringUtils.isEmpty(loginVo.getPassword()) || StringUtils.isEmpty(loginVo.getUsername())) {
+        if (StringUtils.isEmpty(loginVo.getPassword()) ||
+                StringUtils.isEmpty(loginVo.getUsername())) {
             throw new BaimaException(201, "用户名或密码为空");
+        }
+        if (loginVo.getUsername().length()>30){
+            throw new BaimaException(201, "用户名过长");
         }
         QueryWrapper<Customer> wrapper = new QueryWrapper<>();
         wrapper.eq("name", loginVo.getUsername());
@@ -48,6 +52,13 @@ public class FrontSignServiceImpl implements FrontSignService {
     //    前台用户注册
     @Override
     public void regiesterFront(LoginVo loginVo) {
+        if (StringUtils.isEmpty(loginVo.getPassword()) ||
+                StringUtils.isEmpty(loginVo.getUsername())) {
+            throw new BaimaException(201, "用户名或密码为空");
+        }
+        if (loginVo.getUsername().length()>30){
+            throw new BaimaException(201, "用户名过长");
+        }
         Customer customer = new Customer();
         customer.setName(loginVo.getUsername());
         customer.setPassword(loginVo.getPassword());
